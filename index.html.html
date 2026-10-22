@@ -1,0 +1,2497 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đấu Trường Nguyên Tử - Hóa Học 10</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-yellow: #ffe600;
+            --neon-green: #00ff66;
+            --neon-red: #ff0055;
+            --bg-dark: #070913;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        h1, h2, h3, .font-game {
+            font-family: 'Chakra Petch', sans-serif;
+        }
+
+        /* Neon Glow Utilities */
+        .neon-border-cyan {
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 12px rgba(0, 243, 255, 0.4), inset 0 0 8px rgba(0, 243, 255, 0.2);
+        }
+        .neon-border-purple {
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 12px rgba(188, 19, 254, 0.4), inset 0 0 8px rgba(188, 19, 254, 0.2);
+        }
+        .neon-border-yellow {
+            border: 2px solid var(--neon-yellow);
+            box-shadow: 0 0 14px rgba(255, 230, 0, 0.5), inset 0 0 8px rgba(255, 230, 0, 0.2);
+        }
+        .neon-text-cyan {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
+        }
+        .neon-text-yellow {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 10px rgba(255, 230, 0, 0.8);
+        }
+        .neon-text-purple {
+            color: #e082ff;
+            text-shadow: 0 0 10px rgba(188, 19, 254, 0.8);
+        }
+
+        /* Game Show Button */
+        .btn-neon {
+            position: relative;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 700;
+        }
+        .btn-neon:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.02);
+            filter: brightness(1.15);
+        }
+        .btn-neon:active:not(:disabled) {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Orbiting Electron Animations */
+        @keyframes spinOrbit1 {
+            0% { transform: rotateZ(0deg) rotateX(65deg) rotateY(25deg); }
+            100% { transform: rotateZ(360deg) rotateX(65deg) rotateY(25deg); }
+        }
+        @keyframes spinOrbit2 {
+            0% { transform: rotateZ(120deg) rotateX(65deg) rotateY(-25deg); }
+            100% { transform: rotateZ(480deg) rotateX(65deg) rotateY(-25deg); }
+        }
+        @keyframes spinOrbit3 {
+            0% { transform: rotateZ(240deg) rotateX(70deg) rotateY(0deg); }
+            100% { transform: rotateZ(600deg) rotateX(70deg) rotateY(0deg); }
+        }
+        @keyframes floatAtom {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .animate-float {
+            animation: floatAtom 3s ease-in-out infinite;
+        }
+        .animate-shake {
+            animation: shakeError 0.4s ease-in-out;
+        }
+
+        /* Card states for Round 1 */
+        .match-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        .match-card:hover:not(.matched) {
+            transform: translateY(-2px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.35);
+        }
+        .match-card.selected {
+            border-color: var(--neon-yellow) !important;
+            background: rgba(255, 230, 0, 0.15) !important;
+            box-shadow: 0 0 20px rgba(255, 230, 0, 0.6) !important;
+            transform: scale(1.02);
+        }
+        .match-card.matched {
+            border-color: var(--neon-green) !important;
+            background: rgba(0, 255, 102, 0.12) !important;
+            opacity: 0.6;
+            cursor: default;
+            pointer-events: none;
+        }
+        .match-card.wrong {
+            border-color: var(--neon-red) !important;
+            background: rgba(255, 0, 85, 0.25) !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1124;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e3b6e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-cyan);
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(15, 20, 40, 0.82);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative selection:bg-cyan-500 selection:text-black">
+
+    <canvas id="bgCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+    <canvas id="fireworksCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <header class="relative z-20 w-full px-3 py-2.5 md:px-6 md:py-3 glass-panel border-b border-cyan-500/30 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <!-- Brand & Mascot Mini -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="confirmReturnHome()">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-cyan-500 via-purple-600 to-pink-500 p-0.5 shadow-[0_0_15px_rgba(0,243,255,0.6)] flex items-center justify-center">
+                    <div class="w-full h-full bg-slate-950 rounded-full flex items-center justify-center">
+                        <!-- Mini Chibi Atom Icon -->
+                        <svg class="w-7 h-7 md:w-8 md:h-8 text-cyan-400" viewBox="0 0 100 100">
+                            <ellipse cx="50" cy="50" rx="44" ry="16" fill="none" stroke="#00f3ff" stroke-width="4" transform="rotate(30 50 50)"/>
+                            <ellipse cx="50" cy="50" rx="44" ry="16" fill="none" stroke="#bc13fe" stroke-width="4" transform="rotate(-30 50 50)"/>
+                            <circle cx="50" cy="50" r="14" fill="#ffe600"/>
+                            <circle cx="45" cy="48" r="2.5" fill="#000"/>
+                            <circle cx="55" cy="48" r="2.5" fill="#000"/>
+                            <path d="M 46 54 Q 50 58 54 54" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-2xl font-bold tracking-wider neon-text-cyan leading-none">ĐẤU TRƯỜNG NGUYÊN TỬ</h1>
+                    <span class="text-xs text-purple-300 font-medium hidden sm:inline-block">HÓA HỌC 10 • XU HƯỚNG BIẾN ĐỔI TUẦN HOÀN</span>
+                </div>
+            </div>
+
+            <!-- Live HUD: Scoreboard & Big Timer (Visible during active rounds) -->
+            <div id="liveHud" class="hidden items-center gap-3 md:gap-6 order-3 lg:order-2 w-full lg:w-auto justify-center mt-2 lg:mt-0">
+                <!-- Single Player Score -->
+                <div id="hudSingle" class="flex items-center gap-3 bg-slate-900/90 px-4 py-1.5 rounded-xl border border-cyan-400/50 shadow-[0_0_10px_rgba(0,243,255,0.2)]">
+                    <span class="text-xs uppercase text-cyan-300 font-bold">Điểm Số:</span>
+                    <span id="scoreSingleVal" class="text-2xl md:text-3xl font-game font-bold text-yellow-400">0</span>
+                </div>
+
+                <!-- 2 Teams Scoreboard -->
+                <div id="hudTeams" class="hidden items-center gap-2 md:gap-4">
+                    <div id="team1Box" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all duration-300 bg-cyan-950/60 border-cyan-400">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" id="team1Ping"></span>
+                        <span class="text-xs md:text-sm font-bold text-cyan-200">ĐỘI ION DƯƠNG:</span>
+                        <span id="scoreTeam1Val" class="text-xl md:text-2xl font-game font-bold text-yellow-300">0</span>
+                    </div>
+                    <div id="team2Box" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all duration-300 bg-purple-950/40 border-purple-500/40 opacity-75">
+                        <span class="w-2.5 h-2.5 rounded-full bg-purple-400 animate-ping hidden" id="team2Ping"></span>
+                        <span class="text-xs md:text-sm font-bold text-purple-200">ĐỘI ELECTRON:</span>
+                        <span id="scoreTeam2Val" class="text-xl md:text-2xl font-game font-bold text-yellow-300">0</span>
+                    </div>
+                </div>
+
+                <!-- Giant Classroom Countdown Clock -->
+                <div id="timerContainer" class="flex items-center gap-2 bg-slate-950 px-4 py-1.5 rounded-2xl border-2 border-yellow-400 shadow-[0_0_15px_rgba(255,230,0,0.4)]">
+                    <svg class="w-6 h-6 text-yellow-400 animate-spin" style="animation-duration: 8s;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span id="timerDisplay" class="text-2xl md:text-4xl font-game font-bold tracking-wider text-yellow-300 min-w-[68px] text-center">60s</span>
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="flex items-center gap-1.5 md:gap-2 order-2 lg:order-3">
+                <!-- Pause / Resume Button -->
+                <button id="btnPause" onclick="togglePauseGame()" class="hidden btn-neon px-3 py-2 rounded-xl bg-amber-500/20 border border-amber-400 text-amber-300 text-xs md:text-sm flex items-center gap-1.5" title="Tạm dừng / Tiếp tục">
+                    <span id="pauseIcon">⏸</span>
+                    <span id="pauseText" class="hidden sm:inline">Tạm dừng</span>
+                </button>
+
+                <!-- Replay Current Round Button -->
+                <button id="btnReplayRound" onclick="replayCurrentRound()" class="hidden btn-neon px-3 py-2 rounded-xl bg-cyan-500/20 border border-cyan-400 text-cyan-300 text-xs md:text-sm flex items-center gap-1" title="Chơi lại vòng này (Xáo trộn)">
+                    <span>🔄</span>
+                    <span class="hidden md:inline">Chơi lại</span>
+                </button>
+
+                <!-- Skip / Switch Round Button -->
+                <button id="btnNextRoundNav" onclick="skipToNextStage()" class="hidden btn-neon px-3 py-2 rounded-xl bg-purple-500/20 border border-purple-400 text-purple-200 text-xs md:text-sm flex items-center gap-1" title="Chuyển vòng tiếp theo">
+                    <span>⏭</span>
+                    <span class="hidden md:inline">Chuyển vòng</span>
+                </button>
+
+                <!-- BGM Toggle -->
+                <button id="btnMusic" onclick="toggleMusic()" class="btn-neon p-2 md:px-3 md:py-2 rounded-xl bg-slate-800 border border-cyan-500/50 text-cyan-300 text-xs md:text-sm flex items-center gap-1" title="Bật/Tắt nhạc nền">
+                    <span id="musicIcon">🎵</span>
+                    <span id="musicLabel" class="hidden xl:inline">Nhạc: BẬT</span>
+                </button>
+
+                <!-- SFX Toggle -->
+                <button id="btnSfx" onclick="toggleSfx()" class="btn-neon p-2 md:px-3 md:py-2 rounded-xl bg-slate-800 border border-purple-500/50 text-purple-300 text-xs md:text-sm flex items-center gap-1" title="Bật/Tắt âm thanh hiệu ứng">
+                    <span id="sfxIcon">🔊</span>
+                </button>
+
+                <!-- Teacher Control Panel Button -->
+                <button onclick="openTeacherModal()" class="btn-neon px-3 py-2 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 border border-purple-400 text-white text-xs md:text-sm flex items-center gap-1.5 shadow-[0_0_12px_rgba(188,19,254,0.5)]">
+                    <span>👩‍🏫</span>
+                    <span class="hidden sm:inline">Giáo Viên</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-grow flex items-center justify-center p-3 md:p-6">
+        <div class="w-full max-w-6xl mx-auto">
+
+            <!-- ==================== MÀN HÌNH BẮT ĐẦU (START SCREEN) ==================== -->
+            <section id="screenStart" class="glass-panel rounded-3xl p-6 md:p-10 neon-border-cyan text-center relative overflow-hidden">
+                <!-- Decorative background glow -->
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <!-- Animated Chibi Atom Mascot -->
+                <div class="relative w-40 h-40 md:w-48 md:h-48 mx-auto mb-4 animate-float">
+                    <svg class="w-full h-full drop-shadow-[0_0_20px_rgba(0,243,255,0.6)]" viewBox="0 0 200 200">
+                        <!-- Orbits -->
+                        <g style="transform-origin: 100px 100px; animation: spinOrbit1 6s linear infinite;">
+                            <ellipse cx="100" cy="100" rx="85" ry="30" fill="none" stroke="#00f3ff" stroke-width="3" stroke-dasharray="8 4"/>
+                            <circle cx="185" cy="100" r="7" fill="#00f3ff" filter="drop-shadow(0 0 6px #00f3ff)"/>
+                        </g>
+                        <g style="transform-origin: 100px 100px; animation: spinOrbit2 5s linear infinite;">
+                            <ellipse cx="100" cy="100" rx="85" ry="30" fill="none" stroke="#bc13fe" stroke-width="3"/>
+                            <circle cx="15" cy="100" r="7" fill="#bc13fe" filter="drop-shadow(0 0 6px #bc13fe)"/>
+                        </g>
+                        <g style="transform-origin: 100px 100px; animation: spinOrbit3 7s linear infinite;">
+                            <ellipse cx="100" cy="100" rx="85" ry="30" fill="none" stroke="#ffe600" stroke-width="2.5"/>
+                            <circle cx="100" cy="70" r="6" fill="#ffe600" filter="drop-shadow(0 0 6px #ffe600)"/>
+                        </g>
+                        <!-- Chibi Nucleus -->
+                        <circle cx="100" cy="100" r="34" fill="url(#nucleusGrad)" stroke="#fff" stroke-width="2"/>
+                        <defs>
+                            <radialGradient id="nucleusGrad" cx="35%" cy="35%" r="65%">
+                                <stop offset="0%" stop-color="#ffe600"/>
+                                <stop offset="60%" stop-color="#ff7b00"/>
+                                <stop offset="100%" stop-color="#d90429"/>
+                            </radialGradient>
+                        </defs>
+                        <!-- Cute Chibi Eyes & Smile -->
+                        <circle cx="88" cy="95" r="5" fill="#1a1a2e"/>
+                        <circle cx="86" cy="93" r="2" fill="#ffffff"/>
+                        <circle cx="112" cy="95" r="5" fill="#1a1a2e"/>
+                        <circle cx="110" cy="93" r="2" fill="#ffffff"/>
+                        <!-- Blush -->
+                        <ellipse cx="80" cy="102" rx="4" ry="2.5" fill="#ff4d79" opacity="0.8"/>
+                        <ellipse cx="120" cy="102" rx="4" ry="2.5" fill="#ff4d79" opacity="0.8"/>
+                        <!-- Happy mouth -->
+                        <path d="M 93 104 Q 100 112 107 104" stroke="#1a1a2e" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <span class="inline-block px-4 py-1 rounded-full bg-purple-900/60 border border-purple-400 text-purple-200 text-xs md:text-sm font-bold tracking-widest uppercase mb-2">
+                    GAME SHOW KHOA HỌC TƯƠNG TÁC • HÓA HỌC 10
+                </span>
+                <h2 class="text-3xl sm:text-5xl md:text-6xl font-bold font-game tracking-tight mb-3">
+                    <span class="neon-text-cyan">ĐẤU TRƯỜNG</span> <span class="neon-text-yellow">NGUYÊN TỬ</span>
+                </h2>
+                <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base mb-8">
+                    Chinh phục 3 vòng thi kịch tính về <strong>Xu hướng biến đổi bán kính nguyên tử, độ âm điện, tính kim loại và tính phi kim</strong> trong bảng tuần hoàn các nguyên tố hóa học!
+                </p>
+
+                <!-- Game Mode Selector -->
+                <div class="max-w-xl mx-auto mb-8">
+                    <p class="text-xs uppercase tracking-widest text-cyan-300 font-bold mb-3">CHỌN CHẾ ĐỘ THI ĐẤU</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button id="modeSingleBtn" onclick="selectGameMode('single')" class="p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left bg-cyan-950/50 border-cyan-400 shadow-[0_0_15px_rgba(0,243,255,0.3)]">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center text-2xl shrink-0">🧑‍🔬</div>
+                            <div>
+                                <div class="font-game font-bold text-lg text-white">CÁ NHÂN CHINH PHỤC</div>
+                                <div class="text-xs text-cyan-200">1 Người chơi • Luyện tập & Kỷ lục</div>
+                            </div>
+                        </button>
+                        <button id="modeTeamsBtn" onclick="selectGameMode('teams')" class="p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left bg-slate-900/60 border-slate-700 hover:border-purple-400">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-2xl shrink-0">⚔️</div>
+                            <div>
+                                <div class="font-game font-bold text-lg text-white">THI ĐẤU 2 ĐỘI</div>
+                                <div class="text-xs text-purple-200">Luân phiên lượt chơi • Bảng điểm riêng</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Overview of 3 Rounds -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8 text-left">
+                    <div class="bg-slate-900/70 p-4 rounded-2xl border border-cyan-500/30">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300">VÒNG 1</span>
+                            <span class="text-xs text-yellow-400 font-bold" id="startInfoTime1">⏱ 60 Giây</span>
+                        </div>
+                        <h3 class="font-game font-bold text-lg text-cyan-300">GHÉP NỐI SIÊU TỐC</h3>
+                        <p class="text-xs text-slate-300 mt-1">Ghép cặp tính chất nguyên tử với xu hướng biến đổi chính xác (+10đ / -3đ).</p>
+                    </div>
+                    <div class="bg-slate-900/70 p-4 rounded-2xl border border-purple-500/30">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-purple-500/20 text-purple-300">VÒNG 2</span>
+                            <span class="text-xs text-yellow-400 font-bold" id="startInfoTime2">⏱ 90 Giây</span>
+                        </div>
+                        <h3 class="font-game font-bold text-lg text-purple-300">AI NHANH HƠN?</h3>
+                        <p class="text-xs text-slate-300 mt-1">Trả lời nhanh các câu hỏi vận dụng so sánh nguyên tử kèm giải thích (+20đ).</p>
+                    </div>
+                    <div class="bg-slate-900/70 p-4 rounded-2xl border border-yellow-500/30">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded bg-yellow-500/20 text-yellow-300">VÒNG 3</span>
+                            <span class="text-xs text-yellow-400 font-bold" id="startInfoTime3">⏱ 120 Giây</span>
+                        </div>
+                        <h3 class="font-game font-bold text-lg text-yellow-300">THỬ THÁCH NHÀ KHOA HỌC</h3>
+                        <p class="text-xs text-slate-300 mt-1">Quan sát sơ đồ Bảng tuần hoàn & kéo thả sắp xếp dãy nguyên tố (+30đ).</p>
+                    </div>
+                </div>
+
+                <!-- Start CTA Button -->
+                <button onclick="startNewGame()" class="btn-neon px-8 py-4 md:px-12 md:py-5 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-slate-950 font-extrabold text-xl md:text-2xl shadow-[0_0_30px_rgba(0,243,255,0.7)] hover:shadow-[0_0_45px_rgba(255,230,0,0.9)] border-2 border-white">
+                    🚀 BẮT ĐẦU CHINH PHỤC
+                </button>
+            </section>
+
+            <!-- ==================== VÒNG 1: GHÉP NỐI SIÊU TỐC ==================== -->
+            <section id="screenRound1" class="hidden glass-panel rounded-3xl p-4 md:p-8 neon-border-cyan">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-700/80">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-cyan-500 text-slate-950 font-game font-bold text-xs uppercase">VÒNG 1</span>
+                            <span id="r1TurnBadge" class="hidden px-3 py-1 rounded-full bg-yellow-400 text-slate-950 font-bold text-xs">Lượt: ĐỘI ION DƯƠNG</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-game font-bold neon-text-cyan mt-1">GHÉP NỐI SIÊU TỐC</h2>
+                        <p class="text-xs md:text-sm text-slate-300">Chọn 1 thẻ ở <strong>Cột Trái</strong> rồi ghép với xu hướng đúng ở <strong>Cột Phải</strong>. Đúng <span class="text-green-400 font-bold">+10 điểm</span>, sai <span class="text-rose-400 font-bold">-3 điểm</span>.</p>
+                    </div>
+                    <div class="flex items-center gap-3 self-start md:self-center bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-700">
+                        <span class="text-xs text-slate-400">Đã ghép:</span>
+                        <span id="r1ProgressText" class="font-game font-bold text-lg text-cyan-400">0 / 6</span>
+                    </div>
+                </div>
+
+                <!-- Feedback Toast Banner -->
+                <div id="r1Feedback" class="mb-4 py-2 px-4 rounded-xl text-center font-bold text-sm md:text-base transition-all bg-slate-900/60 border border-slate-700 text-slate-300">
+                    💡 Hãy nhấp chọn một tính chất ở cột bên trái để bắt đầu ghép!
+                </div>
+
+                <!-- Two Columns Matching Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
+                    <!-- Left Column: Atomic Properties -->
+                    <div>
+                        <h3 class="font-game font-bold text-base md:text-lg text-cyan-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block"></span>
+                            CỘT TRÁI – TÍNH CHẤT NGUYÊN TỬ
+                        </h3>
+                        <div id="r1LeftCol" class="space-y-2.5"></div>
+                    </div>
+
+                    <!-- Right Column: Periodic Trends -->
+                    <div>
+                        <h3 class="font-game font-bold text-base md:text-lg text-purple-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-purple-400 inline-block"></span>
+                            CỘT PHẢI – XU HƯỚNG BIẾN ĐỔI
+                        </h3>
+                        <div id="r1RightCol" class="space-y-2.5"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== VÒNG 2: AI NHANH HƠN? ==================== -->
+            <section id="screenRound2" class="hidden glass-panel rounded-3xl p-4 md:p-8 neon-border-purple">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 mb-6 border-b border-slate-700/80">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-purple-500 text-white font-game font-bold text-xs uppercase">VÒNG 2</span>
+                            <span id="r2TurnBadge" class="hidden px-3 py-1 rounded-full bg-yellow-400 text-slate-950 font-bold text-xs">Lượt: ĐỘI ION DƯƠNG</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-game font-bold neon-text-purple mt-1">AI NHANH HƠN?</h2>
+                        <p class="text-xs md:text-sm text-slate-300">Chọn nguyên tử đúng nhất cho mỗi câu hỏi vận dụng. Mỗi câu đúng được <span class="text-green-400 font-bold">+20 điểm</span>.</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-700">
+                        <span class="text-xs text-slate-400">Câu hỏi:</span>
+                        <span id="r2ProgressText" class="font-game font-bold text-lg text-purple-400">1 / 5</span>
+                    </div>
+                </div>
+
+                <!-- Question Box -->
+                <div class="bg-slate-900/90 border-2 border-purple-500/40 rounded-2xl p-5 md:p-7 mb-6 text-center shadow-inner">
+                    <span id="r2QuestionTag" class="inline-block text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-purple-900/60 text-purple-300 font-bold mb-3">
+                        CÂU HỎI VẬN DỤNG
+                    </span>
+                    <h3 id="r2QuestionText" class="text-xl md:text-3xl font-bold text-white leading-snug">
+                        Đang tải câu hỏi...
+                    </h3>
+                </div>
+
+                <!-- Answer Choices Grid -->
+                <div id="r2ChoicesGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6"></div>
+
+                <!-- Scientific Explanation Box (Never skipped automatically on timeout) -->
+                <div id="r2ExplanationBox" class="hidden rounded-2xl p-5 border-2 transition-all mb-4">
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <div id="r2ExpHeader" class="font-game font-bold text-lg md:text-xl flex items-center gap-2"></div>
+                            <p id="r2ExpContent" class="text-sm md:text-base text-slate-200 leading-relaxed"></p>
+                        </div>
+                        <button id="r2BtnNextQuestion" onclick="nextRound2Question()" class="btn-neon shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-bold text-sm md:text-base shadow-[0_0_15px_rgba(0,243,255,0.5)]">
+                            CÂU TIẾP THEO ➔
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== VÒNG 3: THỬ THÁCH NHÀ KHOA HỌC ==================== -->
+            <section id="screenRound3" class="hidden glass-panel rounded-3xl p-4 md:p-8 neon-border-yellow">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 mb-4 border-b border-slate-700/80">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-3 py-1 rounded-full bg-yellow-400 text-slate-950 font-game font-bold text-xs uppercase">VÒNG 3</span>
+                            <span id="r3TurnBadge" class="hidden px-3 py-1 rounded-full bg-cyan-400 text-slate-950 font-bold text-xs">Lượt: ĐỘI ION DƯƠNG</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-game font-bold neon-text-yellow mt-1">THỬ THÁCH NHÀ KHOA HỌC</h2>
+                        <p class="text-xs md:text-sm text-slate-300">Dựa vào sơ đồ Bảng tuần hoàn rút gọn, hãy <strong>kéo thả hoặc nhấp chọn</strong> các nguyên tố vào đúng thứ tự. Đúng được <span class="text-green-400 font-bold">+30 điểm</span>.</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-700">
+                        <span class="text-xs text-slate-400">Thử thách:</span>
+                        <span id="r3ProgressText" class="font-game font-bold text-lg text-yellow-400">1 / 3</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Left: Simplified Periodic Table Reference -->
+                    <div class="lg:col-span-5 bg-slate-900/80 rounded-2xl p-4 border border-cyan-500/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-game font-bold text-sm md:text-base text-cyan-300 uppercase flex items-center gap-1.5">
+                                <span>🗺️</span> SƠ ĐỒ BẢNG TUẦN HOÀN RÚT GỌN
+                            </h3>
+                            <span class="text-[11px] text-slate-400">Gợi ý vị trí (Z)</span>
+                        </div>
+
+                        <!-- Mini Periodic Table Grid -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center border-collapse text-xs">
+                                <thead>
+                                    <tr class="text-slate-400 border-b border-slate-700">
+                                        <th class="p-1.5">CK \ Nhóm</th>
+                                        <th class="p-1.5 text-cyan-300">IA</th>
+                                        <th class="p-1.5 text-cyan-300">IIA</th>
+                                        <th class="p-1.5 text-cyan-300">IIIA</th>
+                                        <th class="p-1.5 text-cyan-300">IVA</th>
+                                        <th class="p-1.5 text-cyan-300">VA</th>
+                                        <th class="p-1.5 text-cyan-300">VIA</th>
+                                        <th class="p-1.5 text-cyan-300">VIIA</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="miniPeriodicTableBody" class="divide-y divide-slate-800 font-bold">
+                                    <!-- Populated dynamically with highlighted active elements -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3 text-[11px] text-slate-300 bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 space-y-1">
+                            <div>• <strong>Theo chu kì (Trái ➔ Phải):</strong> Bán kính giảm, Độ âm điện tăng, Tính kim loại giảm, Tính phi kim tăng.</div>
+                            <div>• <strong>Theo nhóm A (Trên ⬇ Dưới):</strong> Bán kính tăng, Độ âm điện giảm, Tính kim loại tăng, Tính phi kim giảm.</div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Interactive Drag & Drop / Click Sorting Arena -->
+                    <div class="lg:col-span-7 bg-slate-900/80 rounded-2xl p-5 border border-yellow-500/30 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-yellow-400">NHIỆM VỤ SẮP XẾP:</span>
+                            <h3 id="r3PromptText" class="text-lg md:text-2xl font-bold text-white mt-1 mb-5">
+                                Sắp xếp các nguyên tố theo chiều...
+                            </h3>
+
+                            <!-- Source Pool of Draggable / Clickable Elements -->
+                            <div class="mb-5">
+                                <p class="text-xs text-slate-400 mb-2">Kho nguyên tố (Kéo thả xuống ô bên dưới hoặc Nhấp chuột để đưa vào ô trống):</p>
+                                <div id="r3SourcePool" class="min-h-[76px] p-3 rounded-2xl bg-slate-950/80 border border-dashed border-slate-600 flex flex-wrap items-center justify-center gap-4"></div>
+                            </div>
+
+                            <!-- Target Slots with Comparison Signs -->
+                            <div class="mb-6">
+                                <p class="text-xs text-slate-400 mb-2">Thứ tự sắp xếp của bạn (Nhấp vào nguyên tố đã đặt để trả về kho):</p>
+                                <div id="r3TargetZone" class="flex items-center justify-center gap-2 sm:gap-4 py-4 px-2 rounded-2xl bg-slate-950/90 border-2 border-cyan-500/30">
+                                    <!-- Dynamically rendered slots and < or > operators -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action & Explanation Area -->
+                        <div>
+                            <div class="flex flex-wrap items-center justify-center gap-3">
+                                <button id="r3BtnReset" onclick="resetRound3CurrentSlots()" class="btn-neon px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-600 text-slate-300 text-sm">
+                                    ↺ Đặt lại ô
+                                </button>
+                                <button id="r3BtnSubmit" onclick="checkRound3Answer()" class="btn-neon px-7 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 font-extrabold text-sm md:text-base shadow-[0_0_15px_rgba(255,230,0,0.5)]">
+                                    ✔ KIỂM TRA KẾT QUẢ
+                                </button>
+                            </div>
+
+                            <!-- Feedback Box for Round 3 -->
+                            <div id="r3FeedbackBox" class="hidden mt-4 p-4 rounded-2xl border-2">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div>
+                                        <div id="r3FeedbackTitle" class="font-game font-bold text-lg"></div>
+                                        <p id="r3FeedbackDesc" class="text-xs md:text-sm text-slate-200 mt-1"></p>
+                                    </div>
+                                    <button id="r3BtnNext" onclick="nextRound3Task()" class="btn-neon shrink-0 px-5 py-2.5 rounded-xl bg-cyan-400 text-slate-950 font-bold text-sm">
+                                        TIẾP TỤC ➔
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÀN HÌNH TỔNG KẾT (SUMMARY SCREEN) ==================== -->
+            <section id="screenSummary" class="hidden glass-panel rounded-3xl p-6 md:p-10 neon-border-yellow text-center">
+                <div class="inline-block px-4 py-1 rounded-full bg-yellow-400/20 border border-yellow-400 text-yellow-300 text-xs font-bold uppercase tracking-widest mb-2">
+                    HOÀN THÀNH CHặng ĐUA KHOA HỌC
+                </div>
+                <h2 id="summaryWinnerTitle" class="text-3xl md:text-5xl font-game font-bold neon-text-yellow mb-2">
+                    BẢNG VÀNG ĐẤU TRƯỜNG NGUYÊN TỬ
+                </h2>
+                <p id="summarySubtitle" class="text-slate-300 text-sm md:text-base mb-6">
+                    Chúc mừng các nhà hóa học trẻ đã xuất sắc chinh phục 3 vòng thử thách!
+                </p>
+
+                <!-- Score Summary Cards -->
+                <div id="summaryCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+                    <!-- Populated via JS for Single or 2 Teams -->
+                </div>
+
+                <!-- Core Knowledge Summary Accordion / Card -->
+                <div class="max-w-4xl mx-auto bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-5 text-left mb-8">
+                    <h3 class="font-game font-bold text-lg text-cyan-300 mb-2 flex items-center gap-2">
+                        <span>📌</span> TỔNG KẾT QUY LUẬT BIẾN ĐỔI TUẦN HOÀN TRỌNG TÂM
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm text-slate-200">
+                        <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800">
+                            <div class="font-bold text-cyan-400 mb-1">1. Trong một Chu kì (Z tăng từ trái ➔ phải):</div>
+                            <ul class="space-y-1 list-disc list-inside">
+                                <li>Số lớp electron <strong>không đổi</strong>, điện tích hạt nhân tăng.</li>
+                                <li><strong>Bán kính nguyên tử:</strong> Giảm dần.</li>
+                                <li><strong>Độ âm điện & Tính phi kim:</strong> Tăng dần.</li>
+                                <li><strong>Tính kim loại:</strong> Giảm dần.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800">
+                            <div class="font-bold text-purple-400 mb-1">2. Trong một Nhóm A (Z tăng từ trên ⬇ dưới):</div>
+                            <ul class="space-y-1 list-disc list-inside">
+                                <li>Số lớp electron <strong>tăng dần</strong> đóng vai trò quyết định.</li>
+                                <li><strong>Bán kính nguyên tử:</strong> Tăng dần.</li>
+                                <li><strong>Độ âm điện & Tính phi kim:</strong> Giảm dần.</li>
+                                <li><strong>Tính kim loại:</strong> Tăng dần.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons: Replay Shuffled, Export CSV, Leaderboard -->
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <button onclick="startNewGame(true)" class="btn-neon px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 font-extrabold text-base shadow-[0_0_20px_rgba(0,243,255,0.6)]">
+                        🔄 CHƠI LẠI (XÁO TRỘN DỮ LIỆU)
+                    </button>
+                    <button onclick="exportResultsCSV()" class="btn-neon px-6 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base shadow-[0_0_20px_rgba(16,185,129,0.5)]">
+                        📥 XUẤT KẾT QUẢ CSV
+                    </button>
+                    <button onclick="openTeacherModal('leaderboard')" class="btn-neon px-6 py-3.5 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-base">
+                        🏆 XEM BẢNG XẾP HẠNG
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Modal: Kiến thức trọng tâm sau mỗi vòng (End-of-Round Knowledge Consolidation) -->
+    <div id="modalTakeaway" class="fixed inset-0 z-40 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="glass-panel max-w-2xl w-full rounded-3xl p-6 md:p-8 neon-border-cyan text-center relative animate-float" style="animation-duration: 5s;">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-cyan-500/20 border border-cyan-400 flex items-center justify-center text-3xl">
+                💡
+            </div>
+            <span id="takeawayBadge" class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold uppercase">
+                CỦNG CỐ KIẾN THỨC VÒNG 1
+            </span>
+            <h3 id="takeawayTitle" class="text-2xl md:text-3xl font-game font-bold neon-text-yellow mt-2 mb-4">
+                KIẾN THỨC TRỌNG TÂM
+            </h3>
+            <div id="takeawayBody" class="text-left bg-slate-900/90 p-5 rounded-2xl border border-slate-700 text-slate-200 text-sm md:text-base space-y-2 mb-6 leading-relaxed">
+                <!-- Dynamic content -->
+            </div>
+            <button id="btnTakeawayContinue" onclick="proceedFromTakeaway()" class="btn-neon px-8 py-4 rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 font-extrabold text-lg shadow-[0_0_25px_rgba(255,230,0,0.6)]">
+                TIẾP TỤC SANG VÒNG TIẾP THEO ➔
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal: Tạm dừng trò chơi (Pause Overlay) -->
+    <div id="modalPause" class="fixed inset-0 z-40 hidden items-center justify-center bg-black/85 backdrop-blur-md p-4">
+        <div class="glass-panel max-w-md w-full rounded-3xl p-8 neon-border-yellow text-center">
+            <div class="text-5xl mb-3">⏸️</div>
+            <h3 class="text-3xl font-game font-bold neon-text-yellow mb-2">ĐANG TẠM DỪNG</h3>
+            <p class="text-slate-300 text-sm mb-6">Đồng hồ đếm ngược đã dừng lại. Hãy nhấn tiếp tục khi lớp học đã sẵn sàng!</p>
+            <div class="flex flex-col gap-3">
+                <button onclick="togglePauseGame()" class="btn-neon w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-extrabold text-lg">
+                    ▶ TIẾP TỤC CHƠI
+                </button>
+                <button onclick="replayCurrentRound(); togglePauseGame();" class="btn-neon w-full py-3 rounded-xl bg-slate-800 border border-cyan-400/50 text-cyan-300 font-bold">
+                    🔄 Chơi lại vòng này (Xáo trộn)
+                </button>
+                <button onclick="returnToHomeScreen()" class="btn-neon w-full py-3 rounded-xl bg-rose-950/60 border border-rose-500/50 text-rose-300 font-bold">
+                    🏠 Về màn hình bắt đầu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalTeacher" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-md p-3 md:p-6">
+        <div class="glass-panel max-w-4xl w-full max-h-[90vh] flex flex-col rounded-3xl neon-border-purple overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 bg-slate-900/90 border-b border-purple-500/40">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-2xl">👩‍🏫</span>
+                    <div>
+                        <h3 class="text-xl md:text-2xl font-game font-bold text-white">BẢNG ĐIỀU KHIỂN GIÁO VIÊN</h3>
+                        <p class="text-xs text-purple-300">Tùy chỉnh thông số tiết học, xem đáp án chi tiết & bảng xếp hạng</p>
+                    </div>
+                </div>
+                <button onclick="closeTeacherModal()" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-rose-600 text-white font-bold flex items-center justify-center transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="flex border-b border-slate-700 bg-slate-950/60 px-6 pt-2 gap-2 overflow-x-auto">
+                <button id="tabBtnSettings" onclick="switchTeacherTab('settings')" class="px-4 py-2.5 font-game font-bold text-sm rounded-t-xl border-b-2 border-cyan-400 text-cyan-300 bg-slate-900/80">
+                    ⚙️ Cài Đặt Trò Chơi
+                </button>
+                <button id="tabBtnAnswers" onclick="switchTeacherTab('answers')" class="px-4 py-2.5 font-game font-bold text-sm rounded-t-xl border-b-2 border-transparent text-slate-400 hover:text-white">
+                    📖 Đáp Án & Lời Giải Khoa Học
+                </button>
+                <button id="tabBtnLeaderboard" onclick="switchTeacherTab('leaderboard')" class="px-4 py-2.5 font-game font-bold text-sm rounded-t-xl border-b-2 border-transparent text-slate-400 hover:text-white">
+                    🏆 Bảng Xếp Hạng Lớp Học
+                </button>
+            </div>
+
+            <!-- Tab Content Body -->
+            <div class="p-6 overflow-y-auto flex-grow space-y-6">
+                <!-- TAB 1: SETTINGS -->
+                <div id="teacherTabSettings" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Time Round 1 -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700">
+                            <label class="block text-xs font-bold uppercase text-cyan-300 mb-2">Thời gian Vòng 1 (Giây)</label>
+                            <input id="inpTimeR1" type="number" min="20" max="300" step="5" value="60" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-cyan-500/50 text-white font-game font-bold text-lg focus:outline-none focus:border-cyan-400">
+                            <span class="text-[11px] text-slate-400 mt-1 block">Mặc định: 60 giây</span>
+                        </div>
+                        <!-- Time Round 2 -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700">
+                            <label class="block text-xs font-bold uppercase text-purple-300 mb-2">Thời gian Vòng 2 (Giây)</label>
+                            <input id="inpTimeR2" type="number" min="30" max="300" step="5" value="90" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-purple-500/50 text-white font-game font-bold text-lg focus:outline-none focus:border-purple-400">
+                            <span class="text-[11px] text-slate-400 mt-1 block">Mặc định: 90 giây</span>
+                        </div>
+                        <!-- Time Round 3 -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700">
+                            <label class="block text-xs font-bold uppercase text-yellow-300 mb-2">Thời gian Vòng 3 (Giây)</label>
+                            <input id="inpTimeR3" type="number" min="30" max="300" step="5" value="120" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-yellow-500/50 text-white font-game font-bold text-lg focus:outline-none focus:border-yellow-400">
+                            <span class="text-[11px] text-slate-400 mt-1 block">Mặc định: 120 giây</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Difficulty Level -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700">
+                            <label class="block text-xs font-bold uppercase text-amber-300 mb-2">Độ khó câu hỏi</label>
+                            <select id="selDifficulty" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-amber-500/50 text-white font-bold text-sm focus:outline-none">
+                                <option value="coban">Cơ bản (Bám sát SGK chuẩn)</option>
+                                <option value="vandung" selected>Vận dụng (So sánh & Giải thích)</option>
+                                <option value="nangcao">Nâng cao (Mở rộng thêm câu hỏi)</option>
+                            </select>
+                            <span class="text-[11px] text-slate-400 mt-1 block">Điều chỉnh độ thử thách & câu hỏi phụ</span>
+                        </div>
+
+                        <!-- Question Count for Round 2 -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700">
+                            <label class="block text-xs font-bold uppercase text-cyan-300 mb-2">Số lượng câu hỏi Vòng 2</label>
+                            <select id="selQCountR2" class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-cyan-500/50 text-white font-bold text-sm focus:outline-none">
+                                <option value="3">3 câu hỏi (Nhanh)</option>
+                                <option value="5" selected>5 câu hỏi (Tiêu chuẩn)</option>
+                                <option value="7">7 câu hỏi (Mở rộng nâng cao)</option>
+                            </select>
+                            <span class="text-[11px] text-slate-400 mt-1 block">Có thể tăng lên 7 câu khi ôn tập kỹ</span>
+                        </div>
+
+                        <!-- Visual & Audio Effects Toggle -->
+                        <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700 space-y-2">
+                            <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Âm thanh & Hiệu ứng</label>
+                            <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                <input id="chkMusic" type="checkbox" checked onchange="syncAudioSettingsFromTeacher()" class="w-4 h-4 accent-cyan-400 rounded">
+                                <span>Bật nhạc nền sôi động</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                <input id="chkSfx" type="checkbox" checked onchange="syncAudioSettingsFromTeacher()" class="w-4 h-4 accent-purple-400 rounded">
+                                <span>Bật âm thanh hiệu ứng</span>
+                            </label>
+                            <label class="flex items-center gap-2 text-sm cursor-pointer">
+                                <input id="chkParticles" type="checkbox" checked onchange="syncAudioSettingsFromTeacher()" class="w-4 h-4 accent-yellow-400 rounded">
+                                <span>Hiệu ứng hạt electron nền</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-end gap-3 pt-2 border-t border-slate-800">
+                        <button onclick="applyTeacherSettings(false)" class="btn-neon px-5 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-bold text-sm">
+                            💾 LƯU CÀI ĐẶT
+                        </button>
+                        <button onclick="applyTeacherSettings(true)" class="btn-neon px-5 py-2.5 rounded-xl bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 font-extrabold text-sm">
+                            🔄 ÁP DỤNG & CHƠI MỚI (XÁO TRỘN)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 2: ANSWER KEYS & EXPLANATIONS -->
+                <div id="teacherTabAnswers" class="hidden space-y-5 text-sm">
+                    <div class="bg-slate-900/90 p-4 rounded-2xl border border-cyan-500/30">
+                        <h4 class="font-game font-bold text-cyan-300 text-base mb-2">VÒNG 1 – GHÉP NỐI SIÊU TỐC (ĐÁP ÁN KHOA HỌC)</h4>
+                        <ul class="space-y-1.5 text-slate-200 list-decimal list-inside">
+                            <li><strong>Bán kính nguyên tử trong một chu kì:</strong> Giảm dần từ trái sang phải (do số lớp electron bằng nhau nhưng điện tích hạt nhân tăng, lực hút hạt nhân với electron lớp ngoài cùng tăng).</li>
+                            <li><strong>Bán kính nguyên tử trong một nhóm A:</strong> Tăng dần từ trên xuống dưới (do số lớp electron tăng nhanh).</li>
+                            <li><strong>Độ âm điện trong một chu kì:</strong> Tăng dần từ trái sang phải (khả năng hút electron liên kết tăng khi bán kính giảm).</li>
+                            <li><strong>Độ âm điện trong một nhóm A:</strong> Giảm dần từ trên xuống dưới (do bán kính nguyên tử tăng).</li>
+                            <li><strong>Tính kim loại trong một chu kì:</strong> Giảm dần từ trái sang phải (khả năng nhường electron giảm dần).</li>
+                            <li><strong>Tính phi kim trong một nhóm A:</strong> Giảm dần từ trên xuống dưới (khả năng nhận electron giảm dần).</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-900/90 p-4 rounded-2xl border border-purple-500/30">
+                        <h4 class="font-game font-bold text-purple-300 text-base mb-2">VÒNG 2 – AI NHANH HƠN? (5 CÂU TRỌNG TÂM + MỞ RỘNG)</h4>
+                        <div class="space-y-2 text-slate-200">
+                            <div><strong>Câu 1 (Li, Na, K - bán kính lớn nhất):</strong> Đáp án <strong>K</strong>. Cùng nhóm IA, đi từ trên xuống (Li ➔ Na ➔ K) số lớp electron tăng từ 2 lên 4 nên K có bán kính lớn nhất.</div>
+                            <div><strong>Câu 2 (Na, Mg, Al - tính kim loại mạnh nhất):</strong> Đáp án <strong>Na</strong>. Cùng chu kì 3, từ trái sang phải (Na ➔ Mg ➔ Al) tính kim loại giảm dần nên Na mạnh nhất.</div>
+                            <div><strong>Câu 3 (F, Cl, Br - độ âm điện lớn nhất):</strong> Đáp án <strong>F</strong>. Cùng nhóm VIIA, từ trên xuống dưới độ âm điện giảm dần nên F (đầu nhóm) có độ âm điện lớn nhất (3,98).</div>
+                            <div><strong>Câu 4 (Mg, Al, Si - bán kính nhỏ nhất):</strong> Đáp án <strong>Si</strong>. Cùng chu kì 3, từ trái sang phải điện tích hạt nhân tăng làm bán kính giảm dần nên Si nhỏ nhất.</div>
+                            <div><strong>Câu 5 (F, Cl, Br - tính phi kim yếu nhất):</strong> Đáp án <strong>Br</strong>. Cùng nhóm VIIA, từ trên xuống dưới (F ➔ Cl ➔ Br) tính phi kim giảm dần nên Br yếu nhất trong 3 nguyên tử.</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/90 p-4 rounded-2xl border border-yellow-500/30">
+                        <h4 class="font-game font-bold text-yellow-300 text-base mb-2">VÒNG 3 – THỬ THÁCH NHÀ KHOA HỌC</h4>
+                        <ul class="space-y-1.5 text-slate-200 list-decimal list-inside">
+                            <li>Sắp xếp Li, Na, K theo chiều bán kính nguyên tử tăng dần: <strong>Li &lt; Na &lt; K</strong> (Nhóm IA).</li>
+                            <li>Sắp xếp Na, Mg, Al theo chiều tính kim loại giảm dần: <strong>Na &gt; Mg &gt; Al</strong> (Chu kì 3).</li>
+                            <li>Sắp xếp F, Cl, Br theo chiều độ âm điện tăng dần: <strong>Br &lt; Cl &lt; F</strong> (Nhóm VIIA).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- TAB 3: LEADERBOARD -->
+                <div id="teacherTabLeaderboard" class="hidden space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-game font-bold text-yellow-300 text-base">LỊCH SỬ THI ĐẤU & BẢNG XẾP HẠNG TRÊN THIẾT BỊ NÀY</h4>
+                        <div class="flex gap-2">
+                            <button onclick="exportResultsCSV()" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-bold">📥 Xuất CSV</button>
+                            <button onclick="clearLeaderboardHistory()" class="px-3 py-1.5 rounded-lg bg-rose-700 text-white text-xs font-bold">🗑 Xóa lịch sử</button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto rounded-2xl border border-slate-700">
+                        <table class="w-full text-left text-xs md:text-sm">
+                            <thead class="bg-slate-900 text-cyan-300 uppercase">
+                                <tr>
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">Thời gian</th>
+                                    <th class="p-3">Chế độ / Đội</th>
+                                    <th class="p-3">Điểm số</th>
+                                    <th class="p-3">Số câu Đúng / Sai</th>
+                                    <th class="p-3">Tổng TG hoàn thành</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboardTableBody" class="divide-y divide-slate-800 bg-slate-950/70">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative z-10 text-center py-3 px-4 text-xs text-slate-400 border-t border-slate-800/80 glass-panel">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>⚛️ <strong>ĐẤU TRƯỜNG NGUYÊN TỬ</strong> – Học liệu số tương tác Hóa học 10 (Chương Bảng tuần hoàn)</span>
+            <span id="statusDifficultyLabel" class="text-cyan-400 font-semibold">Chế độ: Vận dụng • Hoạt động Offline 100%</span>
+        </div>
+    </footer>
+
+    <script>
+        /* ============================================================================
+         * 1. HỆ THỐNG ÂM THANH TỔNG HỢP (WEB AUDIO API - KHÔNG CẦN FILE NGOÀI)
+         * ============================================================================ */
+        let audioCtx = null;
+        let isMusicEnabled = true;
+        let isSfxEnabled = true;
+        let isParticlesEnabled = true;
+        let bgmInterval = null;
+        let bgmBeatIndex = 0;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playTone(freq, type = 'sine', duration = 0.15, volume = 0.15, delay = 0) {
+            if (!isSfxEnabled) return;
+            initAudioContext();
+            if (!audioCtx) return;
+
+            const startTime = audioCtx.currentTime + delay;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            gain.gain.setValueAtTime(0.001, startTime);
+            gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration + 0.02);
+        }
+
+        function sfxCorrect() {
+            // Bright ascending arpeggio
+            playTone(523.25, 'triangle', 0.12, 0.2, 0);     // C5
+            playTone(659.25, 'triangle', 0.12, 0.2, 0.08);  // E5
+            playTone(783.99, 'triangle', 0.14, 0.2, 0.16);  // G5
+            playTone(1046.50, 'sine', 0.30, 0.25, 0.24);    // C6
+        }
+
+        function sfxWrong() {
+            // Descending buzzer
+            playTone(220, 'sawtooth', 0.18, 0.18, 0);
+            playTone(164.81, 'sawtooth', 0.28, 0.20, 0.14);
+        }
+
+        function sfxClick() {
+            playTone(600, 'sine', 0.06, 0.1, 0);
+        }
+
+        function sfxCountdownTick(urgent = false) {
+            if (urgent) {
+                playTone(880, 'square', 0.09, 0.16, 0);
+            } else {
+                playTone(440, 'sine', 0.06, 0.08, 0);
+            }
+        }
+
+        function sfxVictory() {
+            const notes = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
+            const delays = [0, 0.12, 0.24, 0.36, 0.52, 0.66];
+            const durations = [0.12, 0.12, 0.12, 0.18, 0.12, 0.45];
+            notes.forEach((n, idx) => {
+                playTone(n, 'triangle', durations[idx], 0.22, delays[idx]);
+            });
+        }
+
+        function startBackgroundMusic() {
+            stopBackgroundMusic();
+            if (!isMusicEnabled) return;
+            initAudioContext();
+            if (!audioCtx) return;
+
+            // Energetic synth bassline pattern for science game show
+            const melodyNotes = [261.63, 329.63, 392.00, 440.00, 392.00, 329.63, 293.66, 349.23];
+            bgmInterval = setInterval(() => {
+                if (!isMusicEnabled || gameState.isPaused || gameState.currentScreen === 'start') return;
+                if (!audioCtx || audioCtx.state !== 'running') return;
+
+                const freq = melodyNotes[bgmBeatIndex % melodyNotes.length];
+                bgmBeatIndex++;
+
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now);
+
+                gain.gain.setValueAtTime(0.001, now);
+                gain.gain.linearRampToValueAtTime(0.035, now + 0.03);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }, 280);
+        }
+
+        function stopBackgroundMusic() {
+            if (bgmInterval) {
+                clearInterval(bgmInterval);
+                bgmInterval = null;
+            }
+        }
+
+        function toggleMusic() {
+            isMusicEnabled = !isMusicEnabled;
+            document.getElementById('chkMusic').checked = isMusicEnabled;
+            updateAudioButtonsUI();
+            if (isMusicEnabled) {
+                startBackgroundMusic();
+            } else {
+                stopBackgroundMusic();
+            }
+        }
+
+        function toggleSfx() {
+            isSfxEnabled = !isSfxEnabled;
+            document.getElementById('chkSfx').checked = isSfxEnabled;
+            updateAudioButtonsUI();
+            if (isSfxEnabled) sfxClick();
+        }
+
+        function updateAudioButtonsUI() {
+            document.getElementById('musicIcon').textContent = isMusicEnabled ? '🎵' : '🔇';
+            document.getElementById('musicLabel').textContent = isMusicEnabled ? 'Nhạc: BẬT' : 'Nhạc: TẮT';
+            document.getElementById('sfxIcon').textContent = isSfxEnabled ? '🔊' : '🔈';
+        }
+
+        /* ============================================================================
+         * 2. CƠ SỞ DỮ LIỆU KHOA HỌC CHÍNH XÁC CHO 3 VÒNG THI
+         * ============================================================================ */
+
+        // VÒNG 1: Ghép nối siêu tốc
+        // Lưu ý thiết kế: Mỗi thẻ xu hướng bên phải có mô tả đầy đủ tên tính chất hoặc bản chất khoa học riêng biệt,
+        // đồng thời có groupTag khoa học để đảm bảo tính chính xác tuyệt đối.
+        const ROUND1_PAIRS_DATA = [
+            {
+                id: 'r1_p1',
+                leftText: '1. Bán kính nguyên tử trong một chu kì',
+                rightText: 'Giảm dần từ trái sang phải do số lớp electron không đổi nhưng điện tích hạt nhân tăng',
+                conceptTag: 'radius_period'
+            },
+            {
+                id: 'r1_p2',
+                leftText: '2. Bán kính nguyên tử trong một nhóm A',
+                rightText: 'Tăng dần từ trên xuống dưới do số lớp electron tăng lên rõ rệt theo chiều tăng Z',
+                conceptTag: 'radius_group'
+            },
+            {
+                id: 'r1_p3',
+                leftText: '3. Độ âm điện trong một chu kì',
+                rightText: 'Tăng dần từ trái sang phải (khả năng hút cặp electron liên kết tăng khi bán kính giảm)',
+                conceptTag: 'en_period'
+            },
+            {
+                id: 'r1_p4',
+                leftText: '4. Độ âm điện trong một nhóm A',
+                rightText: 'Giảm dần từ trên xuống dưới (lực hút của hạt nhân với electron liên kết yếu đi)',
+                conceptTag: 'en_group'
+            },
+            {
+                id: 'r1_p5',
+                leftText: '5. Tính kim loại trong một chu kì',
+                rightText: 'Giảm dần từ trái sang phải (nguyên tử ngày càng khó nhường electron hóa trị)',
+                conceptTag: 'metal_period'
+            },
+            {
+                id: 'r1_p6',
+                leftText: '6. Tính phi kim trong một nhóm A',
+                rightText: 'Giảm dần từ trên xuống dưới (khả năng nhận thêm electron giảm khi đi xuống cuối nhóm)',
+                conceptTag: 'nonmetal_group'
+            }
+        ];
+
+        // VÒNG 2: 5 câu hỏi trọng tâm theo yêu cầu + 2 câu hỏi mở rộng cho chế độ Nâng cao
+        const ROUND2_QUESTIONS_BANK = [
+            {
+                id: 'q1',
+                question: 'Trong các nguyên tử Li, Na, K, nguyên tử nào có bán kính lớn nhất?',
+                options: [
+                    { symbol: 'Li', detail: 'Lithium (Z = 3, Chu kì 2, Nhóm IA)' },
+                    { symbol: 'Na', detail: 'Sodium (Z = 11, Chu kì 3, Nhóm IA)' },
+                    { symbol: 'K', detail: 'Potassium (Z = 19, Chu kì 4, Nhóm IA)' }
+                ],
+                correct: 'K',
+                explanation: 'Li (Z=3), Na (Z=11), K (Z=19) cùng thuộc nhóm IA. Trong một nhóm A, đi từ trên xuống dưới số lớp electron tăng dần (Li có 2 lớp, Na có 3 lớp, K có 4 lớp) nên bán kính nguyên tử tăng dần: Li < Na < K. Vậy K có bán kính lớn nhất.'
+            },
+            {
+                id: 'q2',
+                question: 'Trong các nguyên tử Na, Mg, Al, nguyên tử nào có tính kim loại mạnh nhất?',
+                options: [
+                    { symbol: 'Na', detail: 'Sodium (Chu kì 3, Nhóm IA)' },
+                    { symbol: 'Mg', detail: 'Magnesium (Chu kì 3, Nhóm IIA)' },
+                    { symbol: 'Al', detail: 'Aluminium (Chu kì 3, Nhóm IIIA)' }
+                ],
+                correct: 'Na',
+                explanation: 'Na, Mg, Al cùng thuộc chu kì 3. Trong một chu kì, đi từ trái sang phải (Na ➔ Mg ➔ Al), điện tích hạt nhân tăng và bán kính giảm nên khả năng nhường electron giảm, tức tính kim loại giảm dần. Vì vậy Na đứng đầu chu kì 3 có tính kim loại mạnh nhất.'
+            },
+            {
+                id: 'q3',
+                question: 'Trong các nguyên tử F, Cl, Br, nguyên tử nào có độ âm điện lớn nhất?',
+                options: [
+                    { symbol: 'F', detail: 'Fluorine (Chu kì 2, Nhóm VIIA)' },
+                    { symbol: 'Cl', detail: 'Chlorine (Chu kì 3, Nhóm VIIA)' },
+                    { symbol: 'Br', detail: 'Bromine (Chu kì 4, Nhóm VIIA)' }
+                ],
+                correct: 'F',
+                explanation: 'F, Cl, Br cùng thuộc nhóm halogen (nhóm VIIA). Trong một nhóm A, đi từ trên xuống dưới bán kính nguyên tử tăng nên độ âm điện giảm dần (F > Cl > Br). Do đó, F (đứng đầu nhóm VIIA) có độ âm điện lớn nhất (χ = 3,98).'
+            },
+            {
+                id: 'q4',
+                question: 'Trong các nguyên tử Mg, Al, Si, nguyên tử nào có bán kính nhỏ nhất?',
+                options: [
+                    { symbol: 'Mg', detail: 'Magnesium (Z = 12, Chu kì 3, Nhóm IIA)' },
+                    { symbol: 'Al', detail: 'Aluminium (Z = 13, Chu kì 3, Nhóm IIIA)' },
+                    { symbol: 'Si', detail: 'Silicon (Z = 14, Chu kì 3, Nhóm IVA)' }
+                ],
+                correct: 'Si',
+                explanation: 'Mg (Z=12), Al (Z=13), Si (Z=14) cùng thuộc chu kì 3 (đều có 3 lớp electron). Đi từ trái sang phải, điện tích hạt nhân tăng làm lực hút giữa hạt nhân và electron lớp ngoài cùng mạnh hơn, khiến bán kính co lại: Mg > Al > Si. Vậy Si có bán kính nhỏ nhất.'
+            },
+            {
+                id: 'q5',
+                question: 'Trong các nguyên tử F, Cl, Br, nguyên tử nào có tính phi kim yếu nhất?',
+                options: [
+                    { symbol: 'F', detail: 'Fluorine (Chu kì 2, Nhóm VIIA)' },
+                    { symbol: 'Cl', detail: 'Chlorine (Chu kì 3, Nhóm VIIA)' },
+                    { symbol: 'Br', detail: 'Bromine (Chu kì 4, Nhóm VIIA)' }
+                ],
+                correct: 'Br',
+                explanation: 'F, Cl, Br cùng thuộc nhóm VIIA. Đi từ trên xuống dưới trong nhóm A (F ➔ Cl ➔ Br), bán kính nguyên tử tăng và độ âm điện giảm nên khả năng nhận electron giảm, tức tính phi kim giảm dần. Vậy Br có tính phi kim yếu nhất trong 3 nguyên tử.'
+            },
+            // 2 câu mở rộng khi giáo viên chọn 7 câu hỏi
+            {
+                id: 'q6',
+                question: 'Trong các nguyên tử C, N, O (cùng chu kì 2), nguyên tử nào có độ âm điện lớn nhất?',
+                options: [
+                    { symbol: 'C', detail: 'Carbon (Chu kì 2, Nhóm IVA)' },
+                    { symbol: 'N', detail: 'Nitrogen (Chu kì 2, Nhóm VA)' },
+                    { symbol: 'O', detail: 'Oxygen (Chu kì 2, Nhóm VIA)' }
+                ],
+                correct: 'O',
+                explanation: 'C, N, O cùng thuộc chu kì 2. Theo chiều từ trái sang phải (C ➔ N ➔ O), điện tích hạt nhân tăng và bán kính nguyên tử giảm nên độ âm điện tăng dần: C < N < O. Vậy Oxygen (O) có độ âm điện lớn nhất.'
+            },
+            {
+                id: 'q7',
+                question: 'Trong các nguyên tử Na, K, Mg, nguyên tử nào có tính kim loại mạnh nhất?',
+                options: [
+                    { symbol: 'Mg', detail: 'Magnesium (Chu kì 3, Nhóm IIA)' },
+                    { symbol: 'Na', detail: 'Sodium (Chu kì 3, Nhóm IA)' },
+                    { symbol: 'K', detail: 'Potassium (Chu kì 4, Nhóm IA)' }
+                ],
+                correct: 'K',
+                explanation: 'Trong chu kì 3: tính kim loại của Na > Mg. Trong nhóm IA: đi từ trên xuống dưới tính kim loại tăng nên K > Na. Kết hợp lại: K > Na > Mg. Vậy K có tính kim loại mạnh nhất.'
+            }
+        ];
+
+        // VÒNG 3: Thử thách Nhà khoa học (Sắp xếp kéo thả / nhấp chuột)
+        const ROUND3_TASKS_DATA = [
+            {
+                id: 'r3_t1',
+                prompt: '1. Sắp xếp Li, Na, K theo chiều bán kính nguyên tử tăng dần:',
+                elements: [
+                    { symbol: 'Li', z: 3, period: 2, group: 'IA', name: 'Lithium' },
+                    { symbol: 'Na', z: 11, period: 3, group: 'IA', name: 'Sodium' },
+                    { symbol: 'K', z: 19, period: 4, group: 'IA', name: 'Potassium' }
+                ],
+                operator: '<',
+                correctOrder: ['Li', 'Na', 'K'],
+                explanation: 'Cùng nhóm IA, đi từ trên xuống dưới (Li ➔ Na ➔ K) số lớp electron tăng dần (2 ➔ 3 ➔ 4 lớp) nên bán kính nguyên tử tăng dần: Li < Na < K.'
+            },
+            {
+                id: 'r3_t2',
+                prompt: '2. Sắp xếp Na, Mg, Al theo chiều tính kim loại giảm dần:',
+                elements: [
+                    { symbol: 'Na', z: 11, period: 3, group: 'IA', name: 'Sodium' },
+                    { symbol: 'Mg', z: 12, period: 3, group: 'IIA', name: 'Magnesium' },
+                    { symbol: 'Al', z: 13, period: 3, group: 'IIIA', name: 'Aluminium' }
+                ],
+                operator: '>',
+                correctOrder: ['Na', 'Mg', 'Al'],
+                explanation: 'Cùng chu kì 3, đi từ trái sang phải (Na ➔ Mg ➔ Al) điện tích hạt nhân tăng, bán kính giảm nên khả năng nhường electron giảm dần: Na > Mg > Al.'
+            },
+            {
+                id: 'r3_t3',
+                prompt: '3. Sắp xếp F, Cl, Br theo chiều độ âm điện tăng dần:',
+                elements: [
+                    { symbol: 'F', z: 9, period: 2, group: 'VIIA', name: 'Fluorine' },
+                    { symbol: 'Cl', z: 17, period: 3, group: 'VIIA', name: 'Chlorine' },
+                    { symbol: 'Br', z: 35, period: 4, group: 'VIIA', name: 'Bromine' }
+                ],
+                operator: '<',
+                correctOrder: ['Br', 'Cl', 'F'],
+                explanation: 'Cùng nhóm VIIA, đi từ trên xuống dưới (F ➔ Cl ➔ Br) độ âm điện giảm dần. Do đó nếu sắp xếp theo chiều độ âm điện tăng dần thì thứ tự đúng là: Br < Cl < F.'
+            }
+        ];
+
+        // Dữ liệu bảng tuần hoàn rút gọn cho Vòng 3
+        const MINI_PTABLE_ROWS = [
+            { period: 2, cells: { 'IA': 'Li (Z=3)', 'IIA': 'Be', 'IIIA': 'B', 'IVA': 'C', 'VA': 'N', 'VIA': 'O', 'VIIA': 'F (Z=9)' } },
+            { period: 3, cells: { 'IA': 'Na (Z=11)', 'IIA': 'Mg (Z=12)', 'IIIA': 'Al (Z=13)', 'IVA': 'Si (Z=14)', 'VA': 'P', 'VIA': 'S', 'VIIA': 'Cl (Z=17)' } },
+            { period: 4, cells: { 'IA': 'K (Z=19)', 'IIA': 'Ca', 'IIIA': 'Ga', 'IVA': 'Ge', 'VA': 'As', 'VIA': 'Se', 'VIIA': 'Br (Z=35)' } }
+        ];
+
+        // Kiến thức củng cố sau mỗi vòng
+        const ROUND_TAKEAWAYS = {
+            1: {
+                badge: 'HOÀN THÀNH VÒNG 1 • GHÉP NỐI SIÊU TỐC',
+                title: 'QUY LUẬT BIẾN ĐỔI TRONG CHU KÌ & NHÓM A',
+                html: `
+                    <p>🌟 <strong>Mẹo ghi nhớ nhanh cho học sinh lớp 10:</strong></p>
+                    <p>• <strong>Bán kính nguyên tử</strong> luôn biến đổi <strong>NGƯỢC CHIỀU</strong> với Độ âm điện và Tính phi kim, nhưng <strong>CÙNG CHIỀU</strong> với Tính kim loại.</p>
+                    <p>• <strong>Từ trái sang phải trong 1 chu kì:</strong> Bán kính & Tính kim loại <strong>GIẢM</strong> | Độ âm điện & Tính phi kim <strong>TĂNG</strong>.</p>
+                    <p>• <strong>Từ trên xuống dưới trong 1 nhóm A:</strong> Bán kính & Tính kim loại <strong>TĂNG</strong> | Độ âm điện & Tính phi kim <strong>GIẢM</strong>.</p>
+                `,
+                btnText: 'BƯỚC VÀO VÒNG 2: AI NHANH HƠN? ➔'
+            },
+            2: {
+                badge: 'HOÀN THÀNH VÒNG 2 • AI NHANH HƠN?',
+                title: 'BẢN CHẤT VỊ TRÍ & CẤU TẠO NGUYÊN TỬ',
+                html: `
+                    <p>🔬 <strong>Giải thích bản chất khoa học:</strong></p>
+                    <p>• <strong>Trong cùng một chu kì:</strong> Các nguyên tử có <em>cùng số lớp electron</em>. Khi Z tăng, lực hút tĩnh điện giữa hạt nhân và electron lớp ngoài cùng mạnh lên làm bán kính co lại.</p>
+                    <p>• <strong>Trong cùng một nhóm A:</strong> Khi đi từ trên xuống dưới, <em>số lớp electron tăng thêm</em> làm khoảng cách từ hạt nhân tới electron lớp ngoài cùng xa hơn, do đó bán kính tăng mạnh.</p>
+                    <p>• <strong>Kim loại mạnh nhất</strong> (nhóm IA cuối bảng) dễ nhường electron nhất; <strong>Phi kim mạnh nhất</strong> (Fluorine - đầu nhóm VIIA) có độ âm điện lớn nhất (3,98).</p>
+                `,
+                btnText: 'BƯỚC VÀO VÒNG 3: THỬ THÁCH NHÀ KHOA HỌC ➔'
+            },
+            3: {
+                badge: 'HOÀN THÀNH VÒNG 3 • THỬ THÁCH NHÀ KHOA HỌC',
+                title: 'KỸ NĂNG SẮP XẾP DÃY NGUYÊN TỐ HÓA HỌC',
+                html: `
+                    <p>🏆 <strong>Các bước vàng khi làm bài tập sắp xếp:</strong></p>
+                    <p>1. Xác định các nguyên tố thuộc <strong>cùng một chu kì</strong> (cùng hàng ngang) hay <strong>cùng một nhóm A</strong> (cùng cột dọc).</p>
+                    <p>2. Đọc kỹ yêu cầu đề bài: sắp xếp theo chiều <strong>TĂNG DẦN (&lt;)</strong> hay <strong>GIẢM DẦN (&gt;)</strong> để tránh đặt ngược dấu bất đẳng thức!</p>
+                `,
+                btnText: 'XEM BẢNG TỔNG KẾT & TRAO GIẢI 🏆'
+            }
+        };
+
+        /* ============================================================================
+         * 3. QUẢN LÝ TRẠNG THÁI TRÒ CHƠI (GAME STATE)
+         * ============================================================================ */
+        const gameConfig = {
+            timeR1: 60,
+            timeR2: 90,
+            timeR3: 120,
+            difficulty: 'vandung',
+            qCountR2: 5
+        };
+
+        const gameState = {
+            mode: 'single', // 'single' | 'teams'
+            currentScreen: 'start', // 'start' | 'round1' | 'round2' | 'round3' | 'summary'
+            currentRound: 0,
+            activeTeam: 1, // 1 or 2 (in teams mode)
+            isPaused: false,
+            timerSeconds: 0,
+            timerInterval: null,
+            roundStartTime: 0,
+
+            // Statistics for Single / Team 1 and Team 2
+            stats: {
+                team1: { name: 'Đội Ion Dương', score: 0, correct: 0, wrong: 0, timeSpent: 0 },
+                team2: { name: 'Đội Electron', score: 0, correct: 0, wrong: 0, timeSpent: 0 }
+            },
+
+            // Round 1 State
+            r1SelectedLeftId: null,
+            r1MatchedCount: 0,
+            r1TotalPairs: 6,
+            r1LeftItems: [],
+            r1RightItems: [],
+
+            // Round 2 State
+            r2Questions: [],
+            r2CurrentIndex: 0,
+            r2AnsweredCurrent: false,
+
+            // Round 3 State
+            r3Tasks: [],
+            r3CurrentIndex: 0,
+            r3CurrentSlots: [null, null, null],
+            r3AnsweredCurrent: false
+        };
+
+        // Helper: Shuffle Array (Fisher-Yates)
+        function shuffleArray(arr) {
+            const copy = [...arr];
+            for (let i = copy.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [copy[i], copy[j]] = [copy[j], copy[i]];
+            }
+            return copy;
+        }
+
+        function selectGameMode(mode) {
+            sfxClick();
+            gameState.mode = mode;
+            const btnSingle = document.getElementById('modeSingleBtn');
+            const btnTeams = document.getElementById('modeTeamsBtn');
+
+            if (mode === 'single') {
+                btnSingle.className = 'p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left bg-cyan-950/50 border-cyan-400 shadow-[0_0_15px_rgba(0,243,255,0.3)]';
+                btnTeams.className = 'p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left bg-slate-900/60 border-slate-700 hover:border-purple-400';
+            } else {
+                btnTeams.className = 'p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left bg-purple-950/50 border-purple-400 shadow-[0_0_15px_rgba(188,19,254,0.35)]';
+                btnSingle.className = 'p-4 rounded-2xl border-2 transition-all flex items-center gap-4 text-left bg-slate-900/60 border-slate-700 hover:border-cyan-400';
+            }
+        }
+
+        function resetGameStats() {
+            gameState.activeTeam = 1;
+            gameState.stats.team1 = {
+                name: gameState.mode === 'single' ? 'Cá Nhân' : 'Đội Ion Dương',
+                score: 0,
+                correct: 0,
+                wrong: 0,
+                timeSpent: 0
+            };
+            gameState.stats.team2 = {
+                name: 'Đội Electron',
+                score: 0,
+                correct: 0,
+                wrong: 0,
+                timeSpent: 0
+            };
+            updateHudUI();
+        }
+
+        function addPointsAndRecord(points, isCorrect) {
+            const target = (gameState.mode === 'teams' && gameState.activeTeam === 2)
+                ? gameState.stats.team2
+                : gameState.stats.team1;
+
+            target.score += points;
+            if (isCorrect) {
+                target.correct += 1;
+            } else {
+                target.wrong += 1;
+            }
+            updateHudUI();
+        }
+
+        function switchTeamTurn() {
+            if (gameState.mode !== 'teams') return;
+            gameState.activeTeam = gameState.activeTeam === 1 ? 2 : 1;
+            updateHudUI();
+        }
+
+        function updateHudUI() {
+            const hudSingle = document.getElementById('hudSingle');
+            const hudTeams = document.getElementById('hudTeams');
+
+            if (gameState.mode === 'single') {
+                hudSingle.classList.remove('hidden');
+                hudSingle.classList.add('flex');
+                hudTeams.classList.add('hidden');
+                hudTeams.classList.remove('flex');
+                document.getElementById('scoreSingleVal').textContent = gameState.stats.team1.score;
+            } else {
+                hudSingle.classList.add('hidden');
+                hudSingle.classList.remove('flex');
+                hudTeams.classList.remove('hidden');
+                hudTeams.classList.add('flex');
+
+                document.getElementById('scoreTeam1Val').textContent = gameState.stats.team1.score;
+                document.getElementById('scoreTeam2Val').textContent = gameState.stats.team2.score;
+
+                const t1Box = document.getElementById('team1Box');
+                const t2Box = document.getElementById('team2Box');
+                const t1Ping = document.getElementById('team1Ping');
+                const t2Ping = document.getElementById('team2Ping');
+
+                if (gameState.activeTeam === 1) {
+                    t1Box.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all duration-300 bg-cyan-950/80 border-cyan-400 shadow-[0_0_12px_rgba(0,243,255,0.4)] scale-105';
+                    t2Box.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all duration-300 bg-purple-950/30 border-purple-500/30 opacity-65';
+                    t1Ping.classList.remove('hidden');
+                    t2Ping.classList.add('hidden');
+                } else {
+                    t2Box.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all duration-300 bg-purple-950/80 border-purple-400 shadow-[0_0_12px_rgba(188,19,254,0.4)] scale-105';
+                    t1Box.className = 'flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 transition-all duration-300 bg-cyan-950/30 border-cyan-500/30 opacity-65';
+                    t2Ping.classList.remove('hidden');
+                    t1Ping.classList.add('hidden');
+                }
+            }
+
+            // Update Turn Badges inside each round
+            const badges = ['r1TurnBadge', 'r2TurnBadge', 'r3TurnBadge'];
+            badges.forEach(bId => {
+                const el = document.getElementById(bId);
+                if (!el) return;
+                if (gameState.mode === 'teams') {
+                    el.classList.remove('hidden');
+                    el.textContent = gameState.activeTeam === 1 ? '⚡ Lượt: ĐỘI ION DƯƠNG' : '⚡ Lượt: ĐỘI ELECTRON';
+                    el.className = gameState.activeTeam === 1
+                        ? 'px-3 py-1 rounded-full bg-cyan-400 text-slate-950 font-bold text-xs shadow'
+                        : 'px-3 py-1 rounded-full bg-purple-400 text-slate-950 font-bold text-xs shadow';
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+        }
+
+        /* ============================================================================
+         * 4. ĐỒNG HỒ ĐẾM NGƯỢC & ĐIỀU HƯỚNG VÒNG CHƠI
+         * ============================================================================ */
+        function startRoundTimer(seconds, onTimeoutCallback) {
+            stopRoundTimer();
+            gameState.timerSeconds = seconds;
+            gameState.roundStartTime = Date.now();
+            renderTimerDisplay();
+
+            gameState.timerInterval = setInterval(() => {
+                if (gameState.isPaused) return;
+
+                gameState.timerSeconds--;
+                // Record 1 second spent for active team/player
+                if (gameState.mode === 'teams') {
+                    gameState.stats.team1.timeSpent += 0.5;
+                    gameState.stats.team2.timeSpent += 0.5;
+                } else {
+                    gameState.stats.team1.timeSpent += 1;
+                }
+
+                renderTimerDisplay();
+
+                if (gameState.timerSeconds <= 10 && gameState.timerSeconds > 0) {
+                    sfxCountdownTick(true);
+                }
+
+                if (gameState.timerSeconds <= 0) {
+                    stopRoundTimer();
+                    sfxWrong();
+                    if (typeof onTimeoutCallback === 'function') {
+                        onTimeoutCallback();
+                    }
+                }
+            }, 1000);
+        }
+
+        function stopRoundTimer() {
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+        }
+
+        function renderTimerDisplay() {
+            const disp = document.getElementById('timerDisplay');
+            const box = document.getElementById('timerContainer');
+            disp.textContent = `${Math.max(0, gameState.timerSeconds)}s`;
+
+            if (gameState.timerSeconds <= 10) {
+                disp.className = 'text-2xl md:text-4xl font-game font-bold tracking-wider text-rose-500 min-w-[68px] text-center animate-pulse';
+                box.className = 'flex items-center gap-2 bg-rose-950/90 px-4 py-1.5 rounded-2xl border-2 border-rose-500 shadow-[0_0_20px_rgba(255,0,85,0.7)]';
+            } else {
+                disp.className = 'text-2xl md:text-4xl font-game font-bold tracking-wider text-yellow-300 min-w-[68px] text-center';
+                box.className = 'flex items-center gap-2 bg-slate-950 px-4 py-1.5 rounded-2xl border-2 border-yellow-400 shadow-[0_0_15px_rgba(255,230,0,0.4)]';
+            }
+        }
+
+        function showScreen(screenId) {
+            const screens = ['screenStart', 'screenRound1', 'screenRound2', 'screenRound3', 'screenSummary'];
+            screens.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+
+            const isPlaying = ['screenRound1', 'screenRound2', 'screenRound3'].includes(screenId);
+            const liveHud = document.getElementById('liveHud');
+            const btnPause = document.getElementById('btnPause');
+            const btnReplayRound = document.getElementById('btnReplayRound');
+            const btnNextRoundNav = document.getElementById('btnNextRoundNav');
+
+            if (isPlaying) {
+                liveHud.classList.remove('hidden');
+                liveHud.classList.add('flex');
+                btnPause.classList.remove('hidden');
+                btnReplayRound.classList.remove('hidden');
+                btnNextRoundNav.classList.remove('hidden');
+            } else {
+                liveHud.classList.add('hidden');
+                liveHud.classList.remove('flex');
+                btnPause.classList.add('hidden');
+                btnReplayRound.classList.add('hidden');
+                btnNextRoundNav.classList.add('hidden');
+            }
+        }
+
+        function startNewGame() {
+            initAudioContext();
+            sfxClick();
+            resetGameStats();
+            gameState.isPaused = false;
+            startBackgroundMusic();
+            startRound1();
+        }
+
+        function togglePauseGame() {
+            if (!['round1', 'round2', 'round3'].includes(gameState.currentScreen)) return;
+            sfxClick();
+            gameState.isPaused = !gameState.isPaused;
+            const modalPause = document.getElementById('modalPause');
+            const pauseIcon = document.getElementById('pauseIcon');
+            const pauseText = document.getElementById('pauseText');
+
+            if (gameState.isPaused) {
+                modalPause.classList.remove('hidden');
+                modalPause.classList.add('flex');
+                pauseIcon.textContent = '▶';
+                pauseText.textContent = 'Tiếp tục';
+            } else {
+                modalPause.classList.add('hidden');
+                modalPause.classList.remove('flex');
+                pauseIcon.textContent = '⏸';
+                pauseText.textContent = 'Tạm dừng';
+            }
+        }
+
+        function replayCurrentRound() {
+            sfxClick();
+            if (gameState.currentRound === 1) startRound1();
+            else if (gameState.currentRound === 2) startRound2();
+            else if (gameState.currentRound === 3) startRound3();
+        }
+
+        function skipToNextStage() {
+            sfxClick();
+            stopRoundTimer();
+            if (gameState.currentRound === 1) showRoundTakeawayModal(1);
+            else if (gameState.currentRound === 2) showRoundTakeawayModal(2);
+            else if (gameState.currentRound === 3) showRoundTakeawayModal(3);
+        }
+
+        function confirmReturnHome() {
+            if (['round1', 'round2', 'round3'].includes(gameState.currentScreen)) {
+                if (!gameState.isPaused) togglePauseGame();
+            } else {
+                returnToHomeScreen();
+            }
+        }
+
+        function returnToHomeScreen() {
+            stopRoundTimer();
+            gameState.isPaused = false;
+            document.getElementById('modalPause').classList.add('hidden');
+            document.getElementById('modalPause').classList.remove('flex');
+            document.getElementById('modalTakeaway').classList.add('hidden');
+            document.getElementById('modalTakeaway').classList.remove('flex');
+            gameState.currentScreen = 'start';
+            gameState.currentRound = 0;
+            showScreen('screenStart');
+        }
+
+        function showRoundTakeawayModal(roundNumber) {
+            stopRoundTimer();
+            sfxVictory();
+            const data = ROUND_TAKEAWAYS[roundNumber];
+            document.getElementById('takeawayBadge').textContent = data.badge;
+            document.getElementById('takeawayTitle').textContent = data.title;
+            document.getElementById('takeawayBody').innerHTML = data.html;
+            document.getElementById('btnTakeawayContinue').textContent = data.btnText;
+
+            const modal = document.getElementById('modalTakeaway');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function proceedFromTakeaway() {
+            sfxClick();
+            const modal = document.getElementById('modalTakeaway');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+
+            if (gameState.currentRound === 1) {
+                startRound2();
+            } else if (gameState.currentRound === 2) {
+                startRound3();
+            } else {
+                showFinalSummaryScreen();
+            }
+        }
+
+        /* ============================================================================
+         * 5. LOGIC VÒNG 1: GHÉP NỐI SIÊU TỐC (60 GIÂY)
+         * ============================================================================ */
+        function startRound1() {
+            gameState.currentScreen = 'round1';
+            gameState.currentRound = 1;
+            gameState.r1SelectedLeftId = null;
+            gameState.r1MatchedCount = 0;
+            gameState.r1TotalPairs = ROUND1_PAIRS_DATA.length;
+
+            // Shuffle left and right columns independently on every play/replay
+            gameState.r1LeftItems = shuffleArray(ROUND1_PAIRS_DATA);
+            gameState.r1RightItems = shuffleArray(ROUND1_PAIRS_DATA);
+
+            showScreen('screenRound1');
+            updateHudUI();
+            renderRound1Columns();
+            setRound1Feedback('💡 Chọn 1 tính chất ở Cột Trái, sau đó nhấp vào xu hướng tương ứng ở Cột Phải!', 'neutral');
+
+            startRoundTimer(gameConfig.timeR1, handleRound1Timeout);
+        }
+
+        function renderRound1Columns() {
+            const leftContainer = document.getElementById('r1LeftCol');
+            const rightContainer = document.getElementById('r1RightCol');
+            leftContainer.innerHTML = '';
+            rightContainer.innerHTML = '';
+
+            document.getElementById('r1ProgressText').textContent = `${gameState.r1MatchedCount} / ${gameState.r1TotalPairs}`;
+
+            gameState.r1LeftItems.forEach(item => {
+                const div = document.createElement('div');
+                div.id = `left_${item.id}`;
+                div.className = 'match-card p-3.5 md:p-4 rounded-2xl bg-slate-900/90 border-2 border-cyan-500/40 text-sm md:text-base font-bold text-white flex items-center justify-between gap-2';
+                div.innerHTML = `
+                    <span>${item.leftText}</span>
+                    <span class="w-6 h-6 rounded-full bg-cyan-500/20 border border-cyan-400 flex items-center justify-center text-xs text-cyan-300 shrink-0">➔</span>
+                `;
+                div.onclick = () => selectRound1LeftCard(item.id);
+                leftContainer.appendChild(div);
+            });
+
+            gameState.r1RightItems.forEach(item => {
+                const div = document.createElement('div');
+                div.id = `right_${item.id}`;
+                div.className = 'match-card p-3.5 md:p-4 rounded-2xl bg-slate-900/90 border-2 border-purple-500/40 text-xs md:text-sm font-semibold text-slate-100 flex items-center gap-3';
+                div.innerHTML = `
+                    <span class="w-6 h-6 rounded-full bg-purple-500/20 border border-purple-400 flex items-center justify-center text-xs text-purple-300 shrink-0">⚡</span>
+                    <span>${item.rightText}</span>
+                `;
+                div.onclick = () => selectRound1RightCard(item.id);
+                rightContainer.appendChild(div);
+            });
+        }
+
+        function selectRound1LeftCard(pairId) {
+            if (gameState.isPaused || gameState.timerSeconds <= 0) return;
+            const cardEl = document.getElementById(`left_${pairId}`);
+            if (!cardEl || cardEl.classList.contains('matched')) return;
+
+            sfxClick();
+            gameState.r1SelectedLeftId = pairId;
+
+            // Highlight selected left card
+            gameState.r1LeftItems.forEach(item => {
+                const el = document.getElementById(`left_${item.id}`);
+                if (el && !el.classList.contains('matched')) {
+                    el.classList.remove('selected');
+                }
+            });
+            cardEl.classList.add('selected');
+            setRound1Feedback('👉 Đã chọn tính chất! Giờ hãy nhấp chọn thẻ xu hướng biến đổi phù hợp ở Cột Phải.', 'info');
+        }
+
+        function selectRound1RightCard(rightPairId) {
+            if (gameState.isPaused || gameState.timerSeconds <= 0) return;
+            const rightEl = document.getElementById(`right_${rightPairId}`);
+            if (!rightEl || rightEl.classList.contains('matched')) return;
+
+            if (!gameState.r1SelectedLeftId) {
+                sfxWrong();
+                setRound1Feedback('⚠️ Hãy chọn một thẻ Tính chất nguyên tử ở Cột Trái trước!', 'warn');
+                return;
+            }
+
+            const leftPairId = gameState.r1SelectedLeftId;
+            const leftEl = document.getElementById(`left_${leftPairId}`);
+            const leftObj = ROUND1_PAIRS_DATA.find(p => p.id === leftPairId);
+            const rightObj = ROUND1_PAIRS_DATA.find(p => p.id === rightPairId);
+
+            // Check match (supports exact ID or identical scientific conceptTag)
+            if (leftObj.id === rightObj.id || leftObj.conceptTag === rightObj.conceptTag) {
+                sfxCorrect();
+                addPointsAndRecord(10, true);
+
+                leftEl.classList.remove('selected');
+                leftEl.classList.add('matched');
+                rightEl.classList.add('matched');
+                gameState.r1SelectedLeftId = null;
+                gameState.r1MatchedCount++;
+
+                document.getElementById('r1ProgressText').textContent = `${gameState.r1MatchedCount} / ${gameState.r1TotalPairs}`;
+                setRound1Feedback(`✅ Chính xác! +10 điểm (${leftObj.leftText})`, 'success');
+
+                switchTeamTurn();
+
+                if (gameState.r1MatchedCount >= gameState.r1TotalPairs) {
+                    stopRoundTimer();
+                    launchFireworks(2500);
+                    setTimeout(() => showRoundTakeawayModal(1), 900);
+                }
+            } else {
+                sfxWrong();
+                addPointsAndRecord(-3, false);
+
+                leftEl.classList.add('wrong', 'animate-shake');
+                rightEl.classList.add('wrong', 'animate-shake');
+                setRound1Feedback('❌ Chưa chính xác (-3 điểm)! Hãy suy nghĩ về sự thay đổi số lớp e hoặc điện tích hạt nhân.', 'error');
+
+                setTimeout(() => {
+                    leftEl.classList.remove('wrong', 'animate-shake', 'selected');
+                    rightEl.classList.remove('wrong', 'animate-shake');
+                }, 500);
+
+                gameState.r1SelectedLeftId = null;
+                switchTeamTurn();
+            }
+        }
+
+        function setRound1Feedback(message, type) {
+            const box = document.getElementById('r1Feedback');
+            box.textContent = message;
+            if (type === 'success') {
+                box.className = 'mb-4 py-2.5 px-4 rounded-xl text-center font-bold text-sm md:text-base transition-all bg-emerald-950/80 border border-emerald-400 text-emerald-300';
+            } else if (type === 'error') {
+                box.className = 'mb-4 py-2.5 px-4 rounded-xl text-center font-bold text-sm md:text-base transition-all bg-rose-950/80 border border-rose-500 text-rose-300';
+            } else if (type === 'warn') {
+                box.className = 'mb-4 py-2.5 px-4 rounded-xl text-center font-bold text-sm md:text-base transition-all bg-amber-950/80 border border-amber-400 text-amber-300';
+            } else {
+                box.className = 'mb-4 py-2.5 px-4 rounded-xl text-center font-bold text-sm md:text-base transition-all bg-slate-900/80 border border-cyan-500/40 text-cyan-200';
+            }
+        }
+
+        function handleRound1Timeout() {
+            setRound1Feedback('⏰ ĐÃ HẾT GIỜ VÒNG 1! Hãy xem lại các cặp đã ghép hoặc nhấn nút Chuyển vòng.', 'warn');
+            setTimeout(() => showRoundTakeawayModal(1), 1600);
+        }
+
+        /* ============================================================================
+         * 6. LOGIC VÒNG 2: AI NHANH HƠN? (90 GIÂY)
+         * ============================================================================ */
+        function startRound2() {
+            gameState.currentScreen = 'round2';
+            gameState.currentRound = 2;
+            gameState.r2CurrentIndex = 0;
+            gameState.r2AnsweredCurrent = false;
+
+            // Select core 5 questions (or 3 / 7 based on Teacher setting) and shuffle order & choices
+            let pool = ROUND2_QUESTIONS_BANK.slice(0, gameConfig.qCountR2);
+            gameState.r2Questions = shuffleArray(pool).map(q => ({
+                ...q,
+                shuffledOptions: shuffleArray(q.options)
+            }));
+
+            showScreen('screenRound2');
+            updateHudUI();
+            renderRound2CurrentQuestion();
+
+            startRoundTimer(gameConfig.timeR2, handleRound2Timeout);
+        }
+
+        function renderRound2CurrentQuestion() {
+            const qObj = gameState.r2Questions[gameState.r2CurrentIndex];
+            const total = gameState.r2Questions.length;
+
+            document.getElementById('r2ProgressText').textContent = `${gameState.r2CurrentIndex + 1} / ${total}`;
+            document.getElementById('r2QuestionTag').textContent = `CÂU HỎI ${gameState.r2CurrentIndex + 1} / ${total} • MỖI CÂU ĐÚNG +20 ĐIỂM`;
+            document.getElementById('r2QuestionText').textContent = qObj.question;
+
+            const expBox = document.getElementById('r2ExplanationBox');
+            expBox.classList.add('hidden');
+
+            const grid = document.getElementById('r2ChoicesGrid');
+            grid.innerHTML = '';
+
+            qObj.shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.id = `r2_opt_${opt.symbol}`;
+                btn.className = 'btn-neon p-5 md:p-6 rounded-2xl bg-slate-900/90 border-2 border-purple-500/50 hover:border-cyan-400 text-center flex flex-col items-center justify-center gap-2 group';
+                btn.innerHTML = `
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-purple-600/40 to-cyan-600/40 border-2 border-cyan-400/60 flex items-center justify-center text-3xl md:text-4xl font-game font-extrabold text-white group-hover:scale-105 transition-transform shadow-[0_0_15px_rgba(0,243,255,0.25)]">
+                        ${opt.symbol}
+                    </div>
+                    <div class="text-xs md:text-sm text-slate-300 font-semibold mt-1">${opt.detail}</div>
+                `;
+                btn.onclick = () => submitRound2Choice(opt.symbol);
+                grid.appendChild(btn);
+            });
+        }
+
+        function submitRound2Choice(selectedSymbol) {
+            if (gameState.isPaused || gameState.r2AnsweredCurrent) return;
+            gameState.r2AnsweredCurrent = true;
+
+            const qObj = gameState.r2Questions[gameState.r2CurrentIndex];
+            const isCorrect = selectedSymbol === qObj.correct;
+
+            if (isCorrect) {
+                sfxCorrect();
+                addPointsAndRecord(20, true);
+            } else {
+                sfxWrong();
+                addPointsAndRecord(0, false);
+            }
+
+            highlightRound2Choices(selectedSymbol, qObj.correct);
+            showRound2Explanation(isCorrect ? 'correct' : 'wrong', qObj);
+        }
+
+        function highlightRound2Choices(selectedSymbol, correctSymbol) {
+            const qObj = gameState.r2Questions[gameState.r2CurrentIndex];
+            qObj.shuffledOptions.forEach(opt => {
+                const btn = document.getElementById(`r2_opt_${opt.symbol}`);
+                if (!btn) return;
+                btn.disabled = true;
+
+                if (opt.symbol === correctSymbol) {
+                    btn.className = 'p-5 md:p-6 rounded-2xl bg-emerald-950/90 border-2 border-emerald-400 text-center flex flex-col items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.5)] scale-105';
+                } else if (opt.symbol === selectedSymbol && selectedSymbol !== correctSymbol) {
+                    btn.className = 'p-5 md:p-6 rounded-2xl bg-rose-950/80 border-2 border-rose-500 text-center flex flex-col items-center justify-center gap-2 opacity-80 animate-shake';
+                } else {
+                    btn.className = 'p-5 md:p-6 rounded-2xl bg-slate-900/40 border border-slate-800 text-center flex flex-col items-center justify-center gap-2 opacity-50';
+                }
+            });
+        }
+
+        function showRound2Explanation(status, qObj) {
+            const expBox = document.getElementById('r2ExplanationBox');
+            const expHeader = document.getElementById('r2ExpHeader');
+            const expContent = document.getElementById('r2ExpContent');
+            const btnNext = document.getElementById('r2BtnNextQuestion');
+
+            expBox.classList.remove('hidden');
+
+            if (status === 'correct') {
+                expBox.className = 'rounded-2xl p-5 border-2 bg-emerald-950/75 border-emerald-400 mb-4';
+                expHeader.innerHTML = `<span class="text-emerald-400">✅ CHÍNH XÁC! (+20 ĐIỂM) — Đáp án đúng: ${qObj.correct}</span>`;
+            } else if (status === 'wrong') {
+                expBox.className = 'rounded-2xl p-5 border-2 bg-rose-950/75 border-rose-500 mb-4';
+                expHeader.innerHTML = `<span class="text-rose-400">❌ CHƯA ĐÚNG! — Đáp án chính xác là: ${qObj.correct}</span>`;
+            } else if (status === 'timeout') {
+                // CRITICAL REQUIREMENT: Không tự động bỏ qua phần giải thích khi hết giờ!
+                expBox.className = 'rounded-2xl p-5 border-2 bg-amber-950/85 border-amber-400 mb-4';
+                expHeader.innerHTML = `<span class="text-amber-300">⏰ ĐÃ HẾT GIỜ! — Đáp án đúng của câu này là: ${qObj.correct}</span>`;
+            }
+
+            expContent.innerHTML = `<strong>Giải thích khoa học:</strong> ${qObj.explanation}`;
+
+            const isLastQuestion = gameState.r2CurrentIndex >= gameState.r2Questions.length - 1;
+            if (isLastQuestion || gameState.timerSeconds <= 0) {
+                btnNext.textContent = 'HOÀN THÀNH VÒNG 2 ➔';
+            } else {
+                btnNext.textContent = 'CÂU TIẾP THEO ➔';
+            }
+        }
+
+        function nextRound2Question() {
+            sfxClick();
+            if (gameState.timerSeconds <= 0 || gameState.r2CurrentIndex >= gameState.r2Questions.length - 1) {
+                stopRoundTimer();
+                showRoundTakeawayModal(2);
+                return;
+            }
+
+            switchTeamTurn();
+            gameState.r2CurrentIndex++;
+            gameState.r2AnsweredCurrent = false;
+            renderRound2CurrentQuestion();
+        }
+
+        function handleRound2Timeout() {
+            // Do NOT auto-skip explanation when timer hits 0!
+            const qObj = gameState.r2Questions[gameState.r2CurrentIndex];
+            if (!gameState.r2AnsweredCurrent) {
+                gameState.r2AnsweredCurrent = true;
+                highlightRound2Choices(null, qObj.correct);
+                showRound2Explanation('timeout', qObj);
+            } else {
+                // If explanation was already visible, update button text so student can read at their own pace
+                document.getElementById('r2BtnNextQuestion').textContent = 'TIẾP TỤC SANG VÒNG 3 ➔';
+            }
+        }
+
+        /* ============================================================================
+         * 7. LOGIC VÒNG 3: THỬ THÁCH NHÀ KHOA HỌC (120 GIÂY - KÉO THẢ & NHẤP CHỌN)
+         * ============================================================================ */
+        let draggedSymbol = null;
+
+        function startRound3() {
+            gameState.currentScreen = 'round3';
+            gameState.currentRound = 3;
+            gameState.r3CurrentIndex = 0;
+            gameState.r3AnsweredCurrent = false;
+            gameState.r3Tasks = shuffleArray(ROUND3_TASKS_DATA).map(task => ({
+                ...task,
+                shuffledElements: shuffleArray(task.elements)
+            }));
+
+            showScreen('screenRound3');
+            updateHudUI();
+            renderRound3Task();
+
+            startRoundTimer(gameConfig.timeR3, handleRound3Timeout);
+        }
+
+        function renderMiniPeriodicTable(highlightSymbols = []) {
+            const tbody = document.getElementById('miniPeriodicTableBody');
+            tbody.innerHTML = '';
+            const groups = ['IA', 'IIA', 'IIIA', 'IVA', 'VA', 'VIA', 'VIIA'];
+
+            MINI_PTABLE_ROWS.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td class="p-2 text-yellow-400 bg-slate-950/60">CK ${row.period}</td>`;
+
+                groups.forEach(g => {
+                    const cellText = row.cells[g] || '';
+                    const symbol = cellText.split(' ')[0];
+                    const isHighlighted = highlightSymbols.includes(symbol);
+
+                    const td = document.createElement('td');
+                    if (isHighlighted) {
+                        td.className = 'p-2 bg-cyan-500/30 border border-cyan-300 text-white rounded-lg shadow-[0_0_10px_rgba(0,243,255,0.5)] animate-pulse';
+                    } else {
+                        td.className = 'p-2 text-slate-400';
+                    }
+                    td.textContent = cellText;
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderRound3Task() {
+            const task = gameState.r3Tasks[gameState.r3CurrentIndex];
+            const total = gameState.r3Tasks.length;
+
+            document.getElementById('r3ProgressText').textContent = `${gameState.r3CurrentIndex + 1} / ${total}`;
+            document.getElementById('r3PromptText').textContent = task.prompt;
+            document.getElementById('r3FeedbackBox').classList.add('hidden');
+            document.getElementById('r3BtnSubmit').disabled = false;
+            document.getElementById('r3BtnReset').disabled = false;
+
+            gameState.r3CurrentSlots = [null, null, null];
+            gameState.r3AnsweredCurrent = false;
+
+            const activeSymbols = task.elements.map(e => e.symbol);
+            renderMiniPeriodicTable(activeSymbols);
+            renderRound3InteractiveZones();
+        }
+
+        function renderRound3InteractiveZones() {
+            const task = gameState.r3Tasks[gameState.r3CurrentIndex];
+            const poolEl = document.getElementById('r3SourcePool');
+            const targetEl = document.getElementById('r3TargetZone');
+
+            poolEl.innerHTML = '';
+            targetEl.innerHTML = '';
+
+            // Render available elements in source pool
+            task.shuffledElements.forEach(elObj => {
+                const isPlaced = gameState.r3CurrentSlots.includes(elObj.symbol);
+                if (isPlaced) return;
+
+                const card = document.createElement('div');
+                card.draggable = !gameState.r3AnsweredCurrent;
+                card.className = 'w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-cyan-600 to-blue-800 border-2 border-cyan-300 flex flex-col items-center justify-center cursor-grab active:cursor-grabbing shadow-[0_0_15px_rgba(0,243,255,0.4)] hover:scale-105 transition-transform';
+                card.innerHTML = `
+                    <span class="text-[10px] text-cyan-200 font-bold">Z = ${elObj.z}</span>
+                    <span class="text-2xl md:text-3xl font-game font-extrabold text-white">${elObj.symbol}</span>
+                    <span class="text-[10px] text-slate-200">${elObj.name}</span>
+                `;
+
+                // Drag Events
+                card.addEventListener('dragstart', (e) => {
+                    draggedSymbol = elObj.symbol;
+                    e.dataTransfer.setData('text/plain', elObj.symbol);
+                });
+
+                // Click/Touch fallback: put in first empty slot
+                card.onclick = () => {
+                    if (gameState.r3AnsweredCurrent || gameState.isPaused) return;
+                    const emptyIdx = gameState.r3CurrentSlots.indexOf(null);
+                    if (emptyIdx !== -1) {
+                        sfxClick();
+                        gameState.r3CurrentSlots[emptyIdx] = elObj.symbol;
+                        renderRound3InteractiveZones();
+                    }
+                };
+
+                poolEl.appendChild(card);
+            });
+
+            // Render 3 Target Slots with comparison operator (< or >)
+            for (let i = 0; i < 3; i++) {
+                const slotSymbol = gameState.r3CurrentSlots[i];
+                const slotDiv = document.createElement('div');
+                slotDiv.className = slotSymbol
+                    ? 'w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br from-purple-700 to-indigo-900 border-2 border-yellow-400 flex flex-col items-center justify-center cursor-pointer shadow-[0_0_15px_rgba(255,230,0,0.4)]'
+                    : 'w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-slate-900/90 border-2 border-dashed border-cyan-400/60 flex flex-col items-center justify-center text-slate-500 text-xs font-bold';
+
+                if (slotSymbol) {
+                    const elObj = task.elements.find(e => e.symbol === slotSymbol);
+                    slotDiv.innerHTML = `
+                        <span class="text-[10px] text-yellow-200">Z = ${elObj.z}</span>
+                        <span class="text-2xl md:text-3xl font-game font-extrabold text-white">${elObj.symbol}</span>
+                        <span class="text-[10px] text-purple-200">Bỏ chọn ✕</span>
+                    `;
+                    slotDiv.onclick = () => {
+                        if (gameState.r3AnsweredCurrent || gameState.isPaused) return;
+                        sfxClick();
+                        gameState.r3CurrentSlots[i] = null;
+                        renderRound3InteractiveZones();
+                    };
+                } else {
+                    slotDiv.innerHTML = `<span>Ô số ${i + 1}</span><span class="text-[10px] text-cyan-400/70">Thả vào đây</span>`;
+                }
+
+                // Drop Listeners
+                slotDiv.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+                slotDiv.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (gameState.r3AnsweredCurrent || gameState.isPaused) return;
+                    const sym = e.dataTransfer.getData('text/plain') || draggedSymbol;
+                    if (!sym) return;
+
+                    // If sym was already in another slot, clear it first
+                    const existingIdx = gameState.r3CurrentSlots.indexOf(sym);
+                    if (existingIdx !== -1) gameState.r3CurrentSlots[existingIdx] = null;
+
+                    sfxClick();
+                    gameState.r3CurrentSlots[i] = sym;
+                    draggedSymbol = null;
+                    renderRound3InteractiveZones();
+                });
+
+                targetEl.appendChild(slotDiv);
+
+                // Operator between slots
+                if (i < 2) {
+                    const opSpan = document.createElement('div');
+                    opSpan.className = 'text-2xl md:text-4xl font-game font-extrabold neon-text-yellow px-1';
+                    opSpan.textContent = task.operator;
+                    targetEl.appendChild(opSpan);
+                }
+            }
+        }
+
+        function resetRound3CurrentSlots() {
+            if (gameState.r3AnsweredCurrent || gameState.isPaused) return;
+            sfxClick();
+            gameState.r3CurrentSlots = [null, null, null];
+            renderRound3InteractiveZones();
+        }
+
+        function checkRound3Answer() {
+            if (gameState.r3AnsweredCurrent || gameState.isPaused) return;
+
+            if (gameState.r3CurrentSlots.includes(null)) {
+                sfxWrong();
+                const fbBox = document.getElementById('r3FeedbackBox');
+                fbBox.classList.remove('hidden');
+                fbBox.className = 'mt-4 p-4 rounded-2xl border-2 bg-amber-950/80 border-amber-400';
+                document.getElementById('r3FeedbackTitle').innerHTML = '<span class="text-amber-300">⚠️ Chưa xếp đủ 3 nguyên tố!</span>';
+                document.getElementById('r3FeedbackDesc').textContent = 'Hãy kéo thả hoặc nhấp chuột đưa cả 3 nguyên tố vào 3 ô trống trước khi kiểm tra.';
+                document.getElementById('r3BtnNext').classList.add('hidden');
+                return;
+            }
+
+            gameState.r3AnsweredCurrent = true;
+            document.getElementById('r3BtnSubmit').disabled = true;
+            document.getElementById('r3BtnReset').disabled = true;
+
+            const task = gameState.r3Tasks[gameState.r3CurrentIndex];
+            const isCorrect = gameState.r3CurrentSlots.every((sym, idx) => sym === task.correctOrder[idx]);
+
+            if (isCorrect) {
+                sfxCorrect();
+                addPointsAndRecord(30, true);
+            } else {
+                sfxWrong();
+                addPointsAndRecord(0, false);
+            }
+
+            showRound3Feedback(isCorrect ? 'correct' : 'wrong', task);
+        }
+
+        function showRound3Feedback(status, task) {
+            const fbBox = document.getElementById('r3FeedbackBox');
+            const fbTitle = document.getElementById('r3FeedbackTitle');
+            const fbDesc = document.getElementById('r3FeedbackDesc');
+            const btnNext = document.getElementById('r3BtnNext');
+
+            fbBox.classList.remove('hidden');
+            btnNext.classList.remove('hidden');
+
+            const correctString = task.correctOrder.join(` ${task.operator} `);
+
+            if (status === 'correct') {
+                fbBox.className = 'mt-4 p-4 rounded-2xl border-2 bg-emerald-950/80 border-emerald-400';
+                fbTitle.innerHTML = `<span class="text-emerald-300">✅ CHÍNH XÁC TUYỆT ĐỐI! (+30 ĐIỂM) — Đáp án: ${correctString}</span>`;
+            } else if (status === 'wrong') {
+                fbBox.className = 'mt-4 p-4 rounded-2xl border-2 bg-rose-950/80 border-rose-500';
+                fbTitle.innerHTML = `<span class="text-rose-300">❌ CHƯA ĐÚNG! Thứ tự chính xác là: ${correctString}</span>`;
+            } else if (status === 'timeout') {
+                fbBox.className = 'mt-4 p-4 rounded-2xl border-2 bg-amber-950/85 border-amber-400';
+                fbTitle.innerHTML = `<span class="text-amber-300">⏰ ĐÃ HẾT GIỜ! Đáp án đúng là: ${correctString}</span>`;
+            }
+
+            fbDesc.innerHTML = `<strong>Giải thích:</strong> ${task.explanation}`;
+
+            const isLast = gameState.r3CurrentIndex >= gameState.r3Tasks.length - 1;
+            btnNext.textContent = (isLast || gameState.timerSeconds <= 0) ? 'HOÀN THÀNH VÒNG 3 ➔' : 'THỬ THÁCH TIẾP THEO ➔';
+        }
+
+        function nextRound3Task() {
+            sfxClick();
+            if (gameState.timerSeconds <= 0 || gameState.r3CurrentIndex >= gameState.r3Tasks.length - 1) {
+                stopRoundTimer();
+                launchFireworks(3500);
+                showRoundTakeawayModal(3);
+                return;
+            }
+
+            switchTeamTurn();
+            gameState.r3CurrentIndex++;
+            renderRound3Task();
+        }
+
+        function handleRound3Timeout() {
+            const task = gameState.r3Tasks[gameState.r3CurrentIndex];
+            if (!gameState.r3AnsweredCurrent) {
+                gameState.r3AnsweredCurrent = true;
+                document.getElementById('r3BtnSubmit').disabled = true;
+                document.getElementById('r3BtnReset').disabled = true;
+                showRound3Feedback('timeout', task);
+            } else {
+                document.getElementById('r3BtnNext').textContent = 'HOÀN THÀNH VÒNG 3 ➔';
+            }
+        }
+
+        /* ============================================================================
+         * 8. MÀN HÌNH TỔNG KẾT, BẢNG XẾP HẠNG & XUẤT FILE CSV
+         * ============================================================================ */
+        function showFinalSummaryScreen() {
+            stopRoundTimer();
+            gameState.currentScreen = 'summary';
+            showScreen('screenSummary');
+            sfxVictory();
+            launchFireworks(5000);
+
+            const container = document.getElementById('summaryCardsContainer');
+            const titleEl = document.getElementById('summaryWinnerTitle');
+            const subEl = document.getElementById('summarySubtitle');
+            container.innerHTML = '';
+
+            const t1 = gameState.stats.team1;
+            const t2 = gameState.stats.team2;
+
+            if (gameState.mode === 'single') {
+                container.className = 'max-w-lg mx-auto mb-8';
+                titleEl.textContent = 'CHÚC MỪNG NHÀ HÓA HỌC TRẺ!';
+                subEl.textContent = `Bạn đã hoàn thành cả 3 vòng thi Đấu Trường Nguyên Tử với ${t1.score} điểm!`;
+
+                container.innerHTML = createSummaryCardHTML(t1, '🏆 KẾT QUẢ CÁ NHÂN', 'cyan', true);
+                saveRecordToLeaderboard(t1.name, t1.score, t1.correct, t1.wrong, Math.round(t1.timeSpent));
+            } else {
+                container.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8';
+                let winnerBadge1 = false;
+                let winnerBadge2 = false;
+
+                if (t1.score > t2.score) {
+                    titleEl.textContent = '🏆 ĐỘI ION DƯƠNG CHIẾN THẮNG!';
+                    subEl.textContent = 'Màn rượt đuổi điểm số vô cùng kịch tính giữa 2 đội!';
+                    winnerBadge1 = true;
+                } else if (t2.score > t1.score) {
+                    titleEl.textContent = '🏆 ĐỘI ELECTRON CHIẾN THẮNG!';
+                    subEl.textContent = 'Màn rượt đuổi điểm số vô cùng kịch tính giữa 2 đội!';
+                    winnerBadge2 = true;
+                } else {
+                    titleEl.textContent = '🤝 HAI ĐỘI HÒA NHAU XUẤT SẮC!';
+                    subEl.textContent = 'Cả hai đội đều nắm vững quy luật biến đổi tuần hoàn!';
+                    winnerBadge1 = true;
+                    winnerBadge2 = true;
+                }
+
+                container.innerHTML =
+                    createSummaryCardHTML(t1, '⚡ ĐỘI ION DƯƠNG', 'cyan', winnerBadge1) +
+                    createSummaryCardHTML(t2, '🔮 ĐỘI ELECTRON', 'purple', winnerBadge2);
+
+                saveRecordToLeaderboard(t1.name, t1.score, t1.correct, t1.wrong, Math.round(t1.timeSpent));
+                saveRecordToLeaderboard(t2.name, t2.score, t2.correct, t2.wrong, Math.round(t2.timeSpent));
+            }
+        }
+
+        function createSummaryCardHTML(stat, headerTitle, themeColor, isWinner) {
+            const borderClass = themeColor === 'cyan' ? 'border-cyan-400' : 'border-purple-400';
+            const badgeHtml = isWinner
+                ? `<span class="px-3 py-0.5 rounded-full bg-yellow-400 text-slate-950 font-extrabold text-xs">👑 QUÁN QUÂN</span>`
+                : '';
+
+            return `
+                <div class="bg-slate-900/90 rounded-3xl p-6 border-2 ${borderClass} shadow-xl text-left">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-game font-bold text-xl text-white">${headerTitle}</h3>
+                        ${badgeHtml}
+                    </div>
+                    <div class="text-center py-4 mb-4 rounded-2xl bg-slate-950/90 border border-slate-800">
+                        <div class="text-xs uppercase text-slate-400 font-bold">Tổng Điểm Đạt Được</div>
+                        <div class="text-5xl font-game font-extrabold neon-text-yellow mt-1">${stat.score}</div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="bg-emerald-950/50 border border-emerald-500/40 p-2.5 rounded-xl">
+                            <div class="text-emerald-300 font-bold text-lg">${stat.correct}</div>
+                            <div class="text-slate-300">Câu Đúng</div>
+                        </div>
+                        <div class="bg-rose-950/50 border border-rose-500/40 p-2.5 rounded-xl">
+                            <div class="text-rose-300 font-bold text-lg">${stat.wrong}</div>
+                            <div class="text-slate-300">Câu Sai</div>
+                        </div>
+                        <div class="bg-cyan-950/50 border border-cyan-500/40 p-2.5 rounded-xl">
+                            <div class="text-cyan-300 font-bold text-lg">${Math.round(stat.timeSpent)}s</div>
+                            <div class="text-slate-300">Thời Gian</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getLeaderboardData() {
+            try {
+                const raw = localStorage.getItem('atomic_arena_leaderboard_v1');
+                return raw ? JSON.parse(raw) : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveRecordToLeaderboard(playerName, score, correct, wrong, timeSec) {
+            try {
+                const list = getLeaderboardData();
+                const nowStr = new Date().toLocaleString('vi-VN');
+                list.push({
+                    timestamp: nowStr,
+                    name: playerName,
+                    score: score,
+                    correct: correct,
+                    wrong: wrong,
+                    timeSec: timeSec,
+                    difficulty: gameConfig.difficulty
+                });
+                list.sort((a, b) => b.score - a.score || a.timeSec - b.timeSec);
+                localStorage.setItem('atomic_arena_leaderboard_v1', JSON.stringify(list.slice(0, 30)));
+            } catch (e) {
+                console.warn('LocalStorage unavailable:', e);
+            }
+        }
+
+        function renderLeaderboardTable() {
+            const tbody = document.getElementById('leaderboardTableBody');
+            const list = getLeaderboardData();
+            tbody.innerHTML = '';
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Chưa có dữ liệu trận đấu nào. Hãy hoàn thành 1 lượt chơi!</td></tr>`;
+                return;
+            }
+
+            list.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-game font-bold text-yellow-400">#${idx + 1}</td>
+                    <td class="p-3 text-slate-300">${item.timestamp}</td>
+                    <td class="p-3 font-bold text-white">${item.name}</td>
+                    <td class="p-3 font-game font-bold text-cyan-300 text-base">${item.score}</td>
+                    <td class="p-3"><span class="text-emerald-400 font-bold">${item.correct} Đúng</span> / <span class="text-rose-400">${item.wrong} Sai</span></td>
+                    <td class="p-3 text-slate-300">${item.timeSec} giây</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearLeaderboardHistory() {
+            sfxClick();
+            try {
+                localStorage.removeItem('atomic_arena_leaderboard_v1');
+            } catch (e) {}
+            renderLeaderboardTable();
+        }
+
+        function exportResultsCSV() {
+            sfxClick();
+            const list = getLeaderboardData();
+            const rows = [
+                ['STT', 'Thoi gian', 'Che do / Doi choi', 'Tong Diem', 'So cau Dung', 'So cau Sai', 'Thoi gian hoan thanh (giay)', 'Do kho']
+            ];
+
+            if (list.length > 0) {
+                list.forEach((item, index) => {
+                    rows.push([
+                        index + 1,
+                        `"${item.timestamp}"`,
+                        `"${item.name}"`,
+                        item.score,
+                        item.correct,
+                        item.wrong,
+                        item.timeSec,
+                        `"${item.difficulty}"`
+                    ]);
+                });
+            } else {
+                // Export current session if leaderboard is empty
+                const t1 = gameState.stats.team1;
+                rows.push([1, `"${new Date().toLocaleString('vi-VN')}"`, `"${t1.name}"`, t1.score, t1.correct, t1.wrong, Math.round(t1.timeSpent), `"${gameConfig.difficulty}"`]);
+                if (gameState.mode === 'teams') {
+                    const t2 = gameState.stats.team2;
+                    rows.push([2, `"${new Date().toLocaleString('vi-VN')}"`, `"${t2.name}"`, t2.score, t2.correct, t2.wrong, Math.round(t2.timeSpent), `"${gameConfig.difficulty}"`]);
+                }
+            }
+
+            // Add UTF-8 BOM so Microsoft Excel opens Vietnamese characters cleanly
+            const csvContent = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Ket_Qua_Dau_Truong_Nguyen_Tu_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        /* ============================================================================
+         * 9. BẢNG ĐIỀU KHIỂN GIÁO VIÊN (TEACHER CONTROL PANEL)
+         * ============================================================================ */
+        function openTeacherModal(defaultTab = 'settings') {
+            sfxClick();
+            if (['round1', 'round2', 'round3'].includes(gameState.currentScreen) && !gameState.isPaused) {
+                togglePauseGame();
+            }
+            const modal = document.getElementById('modalTeacher');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            switchTeacherTab(defaultTab);
+        }
+
+        function closeTeacherModal() {
+            sfxClick();
+            const modal = document.getElementById('modalTeacher');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function switchTeacherTab(tabName) {
+            sfxClick();
+            const tabs = ['settings', 'answers', 'leaderboard'];
+            tabs.forEach(t => {
+                const contentEl = document.getElementById(`teacherTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                const btnEl = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                if (t === tabName) {
+                    contentEl.classList.remove('hidden');
+                    btnEl.className = 'px-4 py-2.5 font-game font-bold text-sm rounded-t-xl border-b-2 border-cyan-400 text-cyan-300 bg-slate-900/80';
+                } else {
+                    contentEl.classList.add('hidden');
+                    btnEl.className = 'px-4 py-2.5 font-game font-bold text-sm rounded-t-xl border-b-2 border-transparent text-slate-400 hover:text-white';
+                }
+            });
+
+            if (tabName === 'leaderboard') {
+                renderLeaderboardTable();
+            }
+        }
+
+        function syncAudioSettingsFromTeacher() {
+            isMusicEnabled = document.getElementById('chkMusic').checked;
+            isSfxEnabled = document.getElementById('chkSfx').checked;
+            isParticlesEnabled = document.getElementById('chkParticles').checked;
+            updateAudioButtonsUI();
+
+            if (isMusicEnabled) startBackgroundMusic();
+            else stopBackgroundMusic();
+        }
+
+        function applyTeacherSettings(restartImmediately) {
+            sfxCorrect();
+            const t1 = parseInt(document.getElementById('inpTimeR1').value, 10) || 60;
+            const t2 = parseInt(document.getElementById('inpTimeR2').value, 10) || 90;
+            const t3 = parseInt(document.getElementById('inpTimeR3').value, 10) || 120;
+
+            gameConfig.timeR1 = Math.min(300, Math.max(20, t1));
+            gameConfig.timeR2 = Math.min(300, Math.max(20, t2));
+            gameConfig.timeR3 = Math.min(300, Math.max(20, t3));
+            gameConfig.difficulty = document.getElementById('selDifficulty').value;
+            gameConfig.qCountR2 = parseInt(document.getElementById('selQCountR2').value, 10) || 5;
+
+            // Update Start Screen labels
+            document.getElementById('startInfoTime1').textContent = `⏱ ${gameConfig.timeR1} Giây`;
+            document.getElementById('startInfoTime2').textContent = `⏱ ${gameConfig.timeR2} Giây`;
+            document.getElementById('startInfoTime3').textContent = `⏱ ${gameConfig.timeR3} Giây`;
+
+            const diffMap = { coban: 'Cơ bản', vandung: 'Vận dụng', nangcao: 'Nâng cao' };
+            document.getElementById('statusDifficultyLabel').textContent = `Chế độ: ${diffMap[gameConfig.difficulty]} • Hoạt động Offline 100%`;
+
+            closeTeacherModal();
+
+            if (restartImmediately) {
+                document.getElementById('modalPause').classList.add('hidden');
+                document.getElementById('modalPause').classList.remove('flex');
+                startNewGame();
+            }
+        }
+
+        /* ============================================================================
+         * 10. HIỆU ỨNG HẠT ELECTRON CHUYỂN ĐỘNG & PHÁO HOA CHIẾN THẮNG (CANVAS)
+         * ============================================================================ */
+        const bgCanvas = document.getElementById('bgCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        const fwCanvas = document.getElementById('fireworksCanvas');
+        const fwCtx = fwCanvas.getContext('2d');
+
+        let bgParticles = [];
+        let fireworksParticles = [];
+        let fireworksActiveUntil = 0;
+
+        function resizeCanvases() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            fwCanvas.width = window.innerWidth;
+            fwCanvas.height = window.innerHeight;
+        }
+
+        function initBgParticles() {
+            resizeCanvases();
+            bgParticles = [];
+            const count = Math.min(45, Math.floor(window.innerWidth / 32));
+            const colors = ['#00f3ff', '#bc13fe', '#ffe600'];
+            for (let i = 0; i < count; i++) {
+                bgParticles.push({
+                    x: Math.random() * bgCanvas.width,
+                    y: Math.random() * bgCanvas.height,
+                    vx: (Math.random() - 0.5) * 0.7,
+                    vy: (Math.random() - 0.5) * 0.7,
+                    r: Math.random() * 2.2 + 1,
+                    color: colors[i % colors.length]
+                });
+            }
+        }
+
+        function launchFireworks(durationMs = 3000) {
+            fireworksActiveUntil = Date.now() + durationMs;
+            spawnFireworkBurst();
+        }
+
+        function spawnFireworkBurst() {
+            const x = Math.random() * (fwCanvas.width * 0.7) + fwCanvas.width * 0.15;
+            const y = Math.random() * (fwCanvas.height * 0.45) + fwCanvas.height * 0.1;
+            const colors = ['#00f3ff', '#ffe600', '#bc13fe', '#00ff66', '#ff0055'];
+
+            for (let i = 0; i < 45; i++) {
+                const angle = (Math.PI * 2 * i) / 45;
+                const speed = Math.random() * 4.5 + 1.5;
+                fireworksParticles.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    alpha: 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 3 + 1.5
+                });
+            }
+        }
+
+        function animateCanvases() {
+            // 1. Background electron network
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            if (isParticlesEnabled) {
+                for (let i = 0; i < bgParticles.length; i++) {
+                    const p = bgParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
+
+                    bgCtx.beginPath();
+                    bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    bgCtx.fillStyle = p.color;
+                    bgCtx.fill();
+
+                    // Connect nearby electrons
+                    for (let j = i + 1; j < bgParticles.length; j++) {
+                        const p2 = bgParticles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 110) {
+                            bgCtx.beginPath();
+                            bgCtx.moveTo(p.x, p.y);
+                            bgCtx.lineTo(p2.x, p2.y);
+                            bgCtx.strokeStyle = `rgba(0, 243, 255, ${0.12 * (1 - dist / 110)})`;
+                            bgCtx.lineWidth = 1;
+                            bgCtx.stroke();
+                        }
+                    }
+                }
+            }
+
+            // 2. Fireworks overlay
+            fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+            if (Date.now() < fireworksActiveUntil && Math.random() < 0.08) {
+                spawnFireworkBurst();
+            }
+
+            for (let i = fireworksParticles.length - 1; i >= 0; i--) {
+                const fp = fireworksParticles[i];
+                fp.x += fp.vx;
+                fp.y += fp.vy;
+                fp.vy += 0.06; // gravity
+                fp.alpha -= 0.018;
+
+                if (fp.alpha <= 0) {
+                    fireworksParticles.splice(i, 1);
+                    continue;
+                }
+
+                fwCtx.globalAlpha = Math.max(0, fp.alpha);
+                fwCtx.beginPath();
+                fwCtx.arc(fp.x, fp.y, fp.size, 0, Math.PI * 2);
+                fwCtx.fillStyle = fp.color;
+                fwCtx.fill();
+            }
+            fwCtx.globalAlpha = 1;
+
+            requestAnimationFrame(animateCanvases);
+        }
+
+        window.addEventListener('resize', resizeCanvases);
+
+        window.onload = function () {
+            initBgParticles();
+            animateCanvases();
+        };
+    </script>
+</body>
+</html>
